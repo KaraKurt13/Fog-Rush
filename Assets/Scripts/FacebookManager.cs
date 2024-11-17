@@ -12,7 +12,7 @@ namespace Assets.Scripts.Facebook
         {
             "public_profile",
             "email",
-            "userFriends"
+            "user_friends"
         };
 
         public void Initialize()
@@ -32,18 +32,25 @@ namespace Assets.Scripts.Facebook
             if (FB.IsInitialized)
             {
                 FB.ActivateApp();
+                FB.LogInWithReadPermissions(_permissions, AuthCallback);
             }
-
-            FB.LogInWithReadPermissions(_permissions,OnSuccessLogin);
-            Debug.Log("Initialized");
+            else
+            {
+                Debug.Log("Can't initialize Facebook!");
+            }
         }
 
-        private void OnSuccessLogin(ILoginResult results)
+        private void AuthCallback(ILoginResult results)
         {
             if (FB.IsLoggedIn)
             {
                 var accessToken = results.AccessToken;
                 Debug.Log($"User {accessToken.UserId} logged in!");
+                // Init menu
+            }
+            else
+            {
+                Debug.LogWarning("Can't log in!");
             }
         }
     }
