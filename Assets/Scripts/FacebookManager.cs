@@ -1,14 +1,22 @@
+using Assets.Scripts.MainMenu;
 using Facebook.Unity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AdaptivePerformance.Provider;
+using UnityEngine.Networking;
 using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Facebook
 {
     public class FacebookManager : MonoBehaviour
     {
-        private readonly List<string> _permissions = new() 
+        public MainMenuEngine MenuEngine;
+
+        #region Auth
+        private readonly List<string> _permissions = new()
         {
             "public_profile",
             "email",
@@ -19,15 +27,20 @@ namespace Assets.Scripts.Facebook
         {
             if (!FB.IsInitialized)
             {
-                FB.Init(OnInitCallback);
+                TryInitialize();
             }
             else
             {
-                FB.ActivateApp();
+                AuthorizeUser();
             }
         }
 
-        private void OnInitCallback()
+        public void TryInitialize()
+        {
+            FB.Init(AuthorizeUser);
+        }
+
+        public void AuthorizeUser()
         {
             if (FB.IsInitialized)
             {
@@ -36,21 +49,99 @@ namespace Assets.Scripts.Facebook
             }
             else
             {
-                Debug.Log("Can't initialize Facebook!");
+                ErrorHandler.Instance.DrawError("Facebook error", "Can't initialize Facebook!");
             }
         }
 
-        private void AuthCallback(ILoginResult results)
+        private async void AuthCallback(ILoginResult results)
         {
             if (FB.IsLoggedIn)
             {
-                var accessToken = results.AccessToken;
-                Debug.Log($"User {accessToken.UserId} logged in!");
-                // Init menu
+                await Task.WhenAll(GetUserData(), GetUserPicture());
+                MenuEngine.OnSuccessfullLogin();
             }
             else
             {
-                Debug.LogWarning("Can't log in!");
+                ErrorHandler.Instance.DrawError("Login Error", "Can't log in Facebook! Try again.");
+            }
+        }
+
+        private async Task GetUserData()
+        {
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+            FB.API("/me?fields=name,id", HttpMethod.GET, result =>
+            {
+                if (result.ResultDictionary.TryGetValue("name", out var name))
+                {
+                    PlayerData.Name = name as string;
+                }
+                else
+                {
+                    Debug.LogWarning("Failed to get user name.");
+                }
+
+                if (result.ResultDictionary.TryGetValue("id", out var id))
+                {
+                    PlayerData.ID = id as string;
+                }
+                else
+                {
+                    Debug.LogWarning("Failed to get user ID.");
+                }
+                tcs.SetResult(true);
+            });
+
+            await tcs.Task;
+        }
+
+        private async Task GetUserPicture()
+        {
+            TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
+            FB.API("/me?fields=picture.width(100).height(100)", HttpMethod.GET, result =>
+            {
+                if (result.Texture != null)
+                {
+                    var texture = result.Texture;
+                    var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
+                    PlayerData.Icon = sprite;
+                    Debug.Log("User picture loaded.");
+                }
+                else
+                {
+                    Debug.LogWarning("Failed to get user picture.");
+                }
+
+                tcs.SetResult(true);
+            });
+
+            await tcs.Task;
+        }
+        #endregion Auth
+
+        public void ShareApp()
+        {
+            if (AccessToken.CurrentAccessToken.ExpirationTime < DateTime.Now)
+            {
+                Debug.LogWarning("Access token has expired!");
+                // Display re-login window
+            }
+            FB.ShareLink(
+                new Uri("https://www.facebook.com/"),
+                "TestTitle",
+                "TestDescription",null,OnShare);
+        }
+
+        private void OnShare(IShareResult result)
+        {
+            if (result.Cancelled || !string.IsNullOrEmpty(result.Error))
+            {
+                Debug.LogWarning("Canceled");
+                return;
+            }
+            else
+            {
+                Debug.Log("shared!");
             }
         }
     }

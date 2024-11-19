@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class ErrorHandler : MonoBehaviour
 {
@@ -10,17 +10,22 @@ public class ErrorHandler : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI _name, _description;
 
-    [SerializeField] Button _closeButton;
+    [SerializeField] GameObject _container;
+ 
+    private void Awake()
+    {
+        Instance = this;
+    }
 
-    public void DrawMessage(string name, string message)
+    public void DrawError(string name, string message)
     {
         _name.text = name;
         _description.text = message;
-        gameObject.SetActive(true);
+        _container.SetActive(true);
     }
 
-    private void Undraw()
+    public void Undraw()
     {
-        gameObject.SetActive(false);
+        _container.SetActive(false);
     }
 }

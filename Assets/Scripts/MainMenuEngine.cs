@@ -1,4 +1,5 @@
 using Assets.Scripts.Facebook;
+using Assets.Scripts.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,16 @@ namespace Assets.Scripts.MainMenu
     {
         public FacebookManager FacebookManager;
 
+        public MainMenuUI MainMenuUI;
+
         private void Start()
         {
             FacebookManager.Initialize();
+        }
+
+        public void OnSuccessfullLogin()
+        {
+            MainMenuUI.OnSuccessfulLogin();
         }
     }
 }
