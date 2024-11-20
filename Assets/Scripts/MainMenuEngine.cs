@@ -21,5 +21,10 @@ namespace Assets.Scripts.MainMenu
         {
             MainMenuUI.OnSuccessfulLogin();
         }
+
+        public void OnLogout()
+        {
+            MainMenuUI.OnConnectionLost();
+        }
     }
 }

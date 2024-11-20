@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,16 +12,34 @@ namespace Assets.Scripts.UI
 
         public PlayerPanelSubcomponent PlayerPanel;
 
+        [SerializeField] GameObject _gameModeSelectorPanel;
+
+        [SerializeField] GameObject _mainPanel;
+
         public void OnSuccessfulLogin()
         {
             StartButton.interactable = true;
             PlayerPanel.DrawAuthorizedPanel();
+            
         }
 
         public void OnConnectionLost()
         {
-            StartButton.enabled = false;
+            StartButton.interactable = false;
             PlayerPanel.DrawUnauthorizedPanel();
+            HideGameModeSelector();
+        }
+
+        public void DisplayGameModeSelector()
+        {
+            _gameModeSelectorPanel.SetActive(true);
+            _mainPanel.SetActive(false);
+        }
+
+        public void HideGameModeSelector()
+        {
+            _gameModeSelectorPanel.SetActive(false);
+            _mainPanel.SetActive(true);
         }
     }
 }

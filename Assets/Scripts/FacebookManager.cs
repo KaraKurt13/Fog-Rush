@@ -53,11 +53,20 @@ namespace Assets.Scripts.Facebook
             }
         }
 
+        public void Logout()
+        {
+            FB.LogOut();
+            MenuEngine.OnLogout();
+        }
+
         private async void AuthCallback(ILoginResult results)
         {
             if (FB.IsLoggedIn)
             {
                 await Task.WhenAll(GetUserData(), GetUserPicture());
+                FB.AppRequest(
+                    "I need your help!"
+                    );
                 MenuEngine.OnSuccessfullLogin();
             }
             else
