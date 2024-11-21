@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: OrangeSandGround_0
+  m_Name: Sand
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: -327926321, guid: 1faef2588348e4841ae618d2f224ff89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
