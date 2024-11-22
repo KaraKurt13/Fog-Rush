@@ -1,7 +1,9 @@
 using Assets.Scripts.Terrain;
+using Assets.Scripts.TileModifiers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Tile = Assets.Scripts.Terrain.Tile;
@@ -16,23 +18,26 @@ public class LevelGenerator : MonoBehaviour
 
     private Dictionary<GroundTypeEnum, TileBase> _tileBases = new();
 
+    private Dictionary<TileModifierTypeEnum, TileModifierBase> _tileModifiers = new();
+
     private int _mapHeight = 10, _mapWidth = 15;
 
     private TerrainData _terrainData;
 
     public TerrainData InitTerrain()
     {
-        InitTilebases();
+        InitData();
 
         _terrainData = new TerrainData(_mapWidth, _mapHeight);
         for (int i = 0; i < _mapWidth; i++)
         {
-            Lines.Enqueue(GenerateLine(i));
+            var modifier = i == _mapWidth - 1 ? TileModifierTypeEnum.Finish : TileModifierTypeEnum.None;
+            Lines.Enqueue(GenerateLine(i, modifier));
         }
         return _terrainData;
     }
 
-    private TileLine GenerateLine(int x)
+    private TileLine GenerateLine(int x, TileModifierTypeEnum modifier = TileModifierTypeEnum.None)
     {
         var tiles = new List<Tile>();
         var randomBase = _tileBases.Random();
@@ -44,6 +49,10 @@ public class LevelGenerator : MonoBehaviour
             var groundType = randomBase.Key;
             var center = _groundTilemap.GetCellCenterWorld(new Vector3Int(x, i));
             var tile = new Tile(x, i, groundType, center);
+            if (modifier != TileModifierTypeEnum.None)
+            {
+                tile.Modifier = _tileModifiers[modifier];
+            }
 
             vectors[i] = new Vector3Int(x, i);
             tileBases[i] = randomBase.Value;
@@ -63,7 +72,7 @@ public class LevelGenerator : MonoBehaviour
         Engine.Player.Init(randomTile);
     }
 
-    private void InitTilebases()
+    private void InitData()
     {
         foreach (GroundTypeEnum type in Enum.GetValues(typeof(GroundTypeEnum)))
         {
@@ -71,6 +80,15 @@ public class LevelGenerator : MonoBehaviour
 
             if (tileBase != null)
                 _tileBases.Add(type, tileBase);
+        }
+
+        foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+        {
+            if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(TileModifierBase)))
+            {
+                var instance = (TileModifierBase)Activator.CreateInstance(type);
+                _tileModifiers.Add(instance.Type, instance);
+            }
         }
     }
 }

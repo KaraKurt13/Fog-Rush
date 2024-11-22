@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
     public Tile CurrentTile;
 
-    public bool IsMoving = false;
+    public bool IsMoving { get; private set; } = false;
 
     private Tile _targetTile;
 
@@ -31,10 +31,16 @@ public class Player : MonoBehaviour
         transform.position = tile.Center;
     }
 
+    public void DisableMovement()
+    {
+
+    }
+
     private void MoveLerp()
     {
         transform.position = _targetTile.Center;
         CurrentTile = _targetTile;
+        OnTileChange();
         ResetMovement();
     }
 
@@ -42,5 +48,10 @@ public class Player : MonoBehaviour
     {
         _targetTile = null;
         IsMoving = false;
+    }
+
+    private void OnTileChange()
+    {
+        CurrentTile.Modifier?.Apply(this);
     }
 }

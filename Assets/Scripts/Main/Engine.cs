@@ -14,7 +14,26 @@ public class Engine : MonoBehaviour
 
     private void Awake()
     {
+        Find.Engine = this;
         Terrain = LevelGenerator.InitTerrain();
         LevelGenerator.SetupPlayers();
+    }
+
+    public void EndGame(Player player, GameEndStatus status)
+    {
+        if (status == GameEndStatus.Win)
+            OnPlayerWin();
+        else
+            OnPlayerLose();
+    }
+
+    private void OnPlayerWin()
+    {
+        Debug.Log("Player won!");
+    }
+
+    private void OnPlayerLose()
+    {
+        Debug.Log("Player lost!");
     }
 }

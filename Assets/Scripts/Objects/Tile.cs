@@ -1,3 +1,4 @@
+using Assets.Scripts.TileModifiers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace Assets.Scripts.Terrain
     public class Tile
     {
         public GroundTypeEnum GroundType { get; }
+
+        public TileModifierBase Modifier { get; set; }
 
         public Vector2 Center { get; }
 
