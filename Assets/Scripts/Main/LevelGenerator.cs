@@ -16,18 +16,20 @@ public class LevelGenerator : MonoBehaviour
 
     private Dictionary<GroundTypeEnum, TileBase> _tileBases = new();
 
-    private int _mapHeight = 10;
+    private int _mapHeight = 10, _mapWidth = 15;
 
-    public void Initialize()
+    private TerrainData _terrainData;
+
+    public TerrainData InitTerrain()
     {
         InitTilebases();
 
-        for (int i = 0; i < 10; i++)
+        _terrainData = new TerrainData(_mapWidth, _mapHeight);
+        for (int i = 0; i < _mapWidth; i++)
         {
             Lines.Enqueue(GenerateLine(i));
         }
-
-        SetupPlayers();
+        return _terrainData;
     }
 
     private TileLine GenerateLine(int x)
@@ -46,6 +48,7 @@ public class LevelGenerator : MonoBehaviour
             vectors[i] = new Vector3Int(x, i);
             tileBases[i] = randomBase.Value;
             tiles.Add(tile);
+            _terrainData.Tiles[x, i] = tile;
         }
 
         _groundTilemap.SetTiles(vectors, tileBases);
@@ -53,11 +56,11 @@ public class LevelGenerator : MonoBehaviour
         return new TileLine(tiles);
     }
 
-    private void SetupPlayers()
+    public void SetupPlayers()
     {
         var startLine = Lines.Peek();
         var randomTile = startLine.Tiles.Random();
-        Engine.Player.gameObject.transform.position = randomTile.Center;
+        Engine.Player.Init(randomTile);
     }
 
     private void InitTilebases()

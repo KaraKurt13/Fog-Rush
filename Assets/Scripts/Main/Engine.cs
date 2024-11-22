@@ -8,8 +8,13 @@ public class Engine : MonoBehaviour
 
     public Player Player;
 
+    public InputController InputController;
+
+    public TerrainData Terrain;
+
     private void Awake()
     {
-        LevelGenerator.Initialize();
+        Terrain = LevelGenerator.InitTerrain();
+        LevelGenerator.SetupPlayers();
     }
 }

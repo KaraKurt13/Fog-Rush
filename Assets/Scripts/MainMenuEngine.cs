@@ -1,8 +1,7 @@
 using Assets.Scripts.Facebook;
 using Assets.Scripts.UI;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.MainMenu
 {
@@ -25,6 +24,16 @@ namespace Assets.Scripts.MainMenu
         public void OnLogout()
         {
             MainMenuUI.OnConnectionLost();
+        }
+
+        public void LoadSingleGame()
+        {
+            SceneManager.LoadScene(1);
+        }
+
+        public void LoadMultiplayerGame()
+        {
+
         }
     }
 }
