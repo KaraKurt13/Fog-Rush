@@ -280,9 +280,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AssetsPPU: 24
-  m_RefResolutionX: 320
-  m_RefResolutionY: 180
+  m_AssetsPPU: 27
+  m_RefResolutionX: 420
+  m_RefResolutionY: 240
   m_UpscaleRT: 0
   m_PixelSnapping: 1
   m_CropFrameX: 0
@@ -323,7 +323,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1
+  orthographic size: 5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -348,11 +348,11 @@ Transform:
   m_GameObject: {fileID: 582651149}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: -0.48, y: -0.5, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1449367589}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &662418982
 GameObject:
@@ -410,6 +410,7 @@ GameObject:
   - component: {fileID: 1449367589}
   - component: {fileID: 1449367590}
   - component: {fileID: 1449367591}
+  - component: {fileID: 1449367592}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -430,7 +431,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 582651152}
   - {fileID: 1964059052}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -499,7 +499,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Engine: {fileID: 1984736717}
-  IsMoving: 0
+--- !u!114 &1449367592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449367588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c67fe219bfa00d34aafb9dbbdffeffeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Camera: {fileID: 582651151}
+  AssignedPlayer: {fileID: 1449367591}
 --- !u!1 &1743720680
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,7 +838,6 @@ MonoBehaviour:
   LevelGenerator: {fileID: 520843456}
   Player: {fileID: 1449367591}
   InputController: {fileID: 662418984}
-  Terrain: {fileID: 0}
 --- !u!1 &2109113043
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,3 +1001,4 @@ SceneRoots:
   - {fileID: 1743720684}
   - {fileID: 1971862034}
   - {fileID: 1449367589}
+  - {fileID: 582651152}

@@ -13,16 +13,11 @@ public class Player : MonoBehaviour
 
     private Tile _targetTile;
 
-    private void Update()
-    {
-        if (IsMoving)
-            MoveLerp();
-    }
-
     public void Move(Tile tile)
     {
         _targetTile = tile;
         IsMoving = true;
+        MoveLerp();
     }
 
     public void Init(Tile tile)
@@ -38,10 +33,25 @@ public class Player : MonoBehaviour
 
     private void MoveLerp()
     {
-        transform.position = _targetTile.Center;
+        StartCoroutine(LerpPosition(CurrentTile.Center, _targetTile.Center, 0.5f));
+    }
+
+    private IEnumerator LerpPosition(Vector2 start, Vector2 end, float duration)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            transform.position = Vector2.Lerp(start, end, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = end;
         CurrentTile = _targetTile;
         OnTileChange();
         ResetMovement();
+
     }
 
     private void ResetMovement()
