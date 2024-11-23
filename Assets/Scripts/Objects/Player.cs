@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
 
     public bool IsMoving { get; private set; } = false;
 
+    public bool MovementEnabled { get; private set; } = true;
+
     private Tile _targetTile;
 
     public void Move(Tile tile)
@@ -28,7 +30,17 @@ public class Player : MonoBehaviour
 
     public void DisableMovement()
     {
+        MovementEnabled = false;
+    }
 
+    public void EnableMovement()
+    {
+        MovementEnabled = true;
+    }
+
+    public bool CanMove()
+    {
+        return !IsMoving && MovementEnabled;
     }
 
     private void MoveLerp()
@@ -51,7 +63,6 @@ public class Player : MonoBehaviour
         CurrentTile = _targetTile;
         OnTileChange();
         ResetMovement();
-
     }
 
     private void ResetMovement()

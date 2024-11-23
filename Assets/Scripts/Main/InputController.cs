@@ -15,7 +15,7 @@ public class InputController : MonoBehaviour
     private void Update()
     {
         var vector = GetMovementVector();
-        if (vector != Vector2Int.zero && !Engine.Player.IsMoving)
+        if (vector != Vector2Int.zero && Engine.Player.CanMove())
         {
             var vertical = vector.y;
             var horizontal = vector.x;

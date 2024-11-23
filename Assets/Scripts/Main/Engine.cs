@@ -22,6 +22,7 @@ public class Engine : MonoBehaviour
 
     public void EndGame(Player player, GameEndStatus status)
     {
+        player.DisableMovement();
         if (status == GameEndStatus.Win)
             OnPlayerWin();
         else
