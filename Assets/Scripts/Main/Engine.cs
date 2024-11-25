@@ -1,6 +1,8 @@
+using Assets.Scripts.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Engine : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class Engine : MonoBehaviour
     public Player Player;
 
     public InputController InputController;
+
+    public GameMenuUI GameMenuUI;
 
     public TerrainData Terrain;
 
@@ -31,11 +35,16 @@ public class Engine : MonoBehaviour
 
     private void OnPlayerWin()
     {
-        Debug.Log("Player won!");
+        GameMenuUI.ShowWinScreen();
     }
 
     private void OnPlayerLose()
     {
-        Debug.Log("Player lost!");
+        GameMenuUI.ShowLoseScreen();
+    }
+
+    public void LoadMainMenuScene()
+    {
+        SceneManager.LoadScene(0);
     }
 }
