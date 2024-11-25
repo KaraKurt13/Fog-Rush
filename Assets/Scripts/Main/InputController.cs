@@ -22,7 +22,7 @@ public class InputController : MonoBehaviour
             var currentTile = Engine.Player.CurrentTile;
             var newTileVector = new Vector2Int(currentTile.X + horizontal, currentTile.Y + vertical);
             var tile = Engine.Terrain.GetTile(newTileVector.x, newTileVector.y);
-            if (tile != null)
+            if (tile != null && tile.IsWalkable())
                 Engine.Player.Move(tile);
         }
     }

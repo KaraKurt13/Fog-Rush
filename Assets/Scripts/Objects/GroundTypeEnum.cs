@@ -7,5 +7,7 @@ public enum GroundTypeEnum
     None,
     Grass,
     Sand,
-    Ice
+    Ice,
+    River,
+    Bridge
 }
