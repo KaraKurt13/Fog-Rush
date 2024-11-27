@@ -13,10 +13,13 @@ public class TileLine
 
     public TileLineTypeEnum Type { get; set; }
 
-    public TileLine(List<Tile> tiles, int x)
+    public ObstaclesGenerator ObstaclesGenerator { get; }
+
+    public TileLine(List<Tile> tiles, int x, ObstaclesGenerator obstaclesGenerator = null)
     {
         Tiles = tiles;
         X = x;
+        ObstaclesGenerator = obstaclesGenerator;
     }
 
     public Tile GetTile(int y)
