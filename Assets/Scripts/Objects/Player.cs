@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
 
     public bool MovementEnabled { get; private set; } = true;
 
+    public PlayerStatsTracker StatsTracker; 
+
     private Tile _targetTile;
 
     public void Move(Tile tile)
@@ -26,6 +28,7 @@ public class Player : MonoBehaviour
     {
         CurrentTile = tile;
         transform.position = tile.Center;
+        StatsTracker.StartTracking();
     }
 
     public void DisableMovement()

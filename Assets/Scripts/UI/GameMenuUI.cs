@@ -6,16 +6,18 @@ namespace Assets.Scripts.UI
 {
     public class GameMenuUI : MonoBehaviour
     {
-        [SerializeField] GameObject _winScreen, _loseScreen, _menuScreen;
+        [SerializeField] GameObject _loseScreen, _menuScreen;
+
+        [SerializeField] WinScreenSubcomponent _winScreen;
 
         public void ShowMenu()
         {
             _menuScreen.SetActive(true);
         }
 
-        public void ShowWinScreen()
+        public void ShowWinScreen(PlayerStats stats)
         {
-            _winScreen.SetActive(true);
+            _winScreen.Draw(stats);
         }
 
         public void ShowLoseScreen()

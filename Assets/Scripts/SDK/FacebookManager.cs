@@ -15,6 +15,8 @@ namespace Assets.Scripts.Facebook
     {
         public MainMenuEngine MenuEngine;
 
+        public static FacebookManager Instance;
+
         #region Auth
         private readonly List<string> _permissions = new()
         {
@@ -44,6 +46,7 @@ namespace Assets.Scripts.Facebook
         {
             if (FB.IsInitialized)
             {
+                Instance = this;
                 FB.ActivateApp();
                 FB.LogInWithReadPermissions(_permissions, AuthCallback);
             }
@@ -127,6 +130,16 @@ namespace Assets.Scripts.Facebook
             await tcs.Task;
         }
         #endregion Auth
+
+        public void ShareGameResults(PlayerStats stats)
+        {
+            FB.FeedShare(
+                link: new System.Uri("https://facebook.com"),
+                linkName: "My record!",
+                linkCaption: "Try and beat me!",
+                linkDescription: $"I just finished this level in {stats.TimeSpent} sec!\nWith {stats.RemainingHealth} remaining health!"
+                );
+        }
 
         public void ShareApp()
         {

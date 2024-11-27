@@ -26,21 +26,14 @@ public class Engine : MonoBehaviour
 
     public void EndGame(Player player, GameEndStatus status)
     {
+        var stats = player.StatsTracker.GetStats();
         player.DisableMovement();
+        player.StatsTracker.StopTracking();
+
         if (status == GameEndStatus.Win)
-            OnPlayerWin();
+            GameMenuUI.ShowWinScreen(stats);
         else
-            OnPlayerLose();
-    }
-
-    private void OnPlayerWin()
-    {
-        GameMenuUI.ShowWinScreen();
-    }
-
-    private void OnPlayerLose()
-    {
-        GameMenuUI.ShowLoseScreen();
+            GameMenuUI.ShowLoseScreen();
     }
 
     public void LoadMainMenuScene()
