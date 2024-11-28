@@ -16,16 +16,19 @@ public class Engine : MonoBehaviour
 
     public TerrainData Terrain;
 
+    public FogWall FogWall;
+
     private void Awake()
     {
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
         Find.Engine = this;
         Terrain = LevelGenerator.InitTerrain();
         LevelGenerator.SetupPlayers();
+        FogWall.Activate(0.3f);
     }
 
     public void EndGame(Player player, GameEndStatus status)
     {
+        FogWall.Deactivate();
         var stats = player.StatsTracker.GetStats();
         player.DisableMovement();
         player.StatsTracker.StopTracking();

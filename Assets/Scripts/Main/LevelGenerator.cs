@@ -17,7 +17,7 @@ public class LevelGenerator : MonoBehaviour
 
     public Queue<TileLine> Lines = new();
 
-    [SerializeField] Tilemap _groundTilemap;
+    public TilemapTerrain Tilemaps;
 
     private Dictionary<GroundTypeEnum, TileBase> _tileBases = new();
 
@@ -137,7 +137,7 @@ public class LevelGenerator : MonoBehaviour
 
         for (int y = 0; y < _mapHeight; y++)
         {
-            var center = _groundTilemap.GetCellCenterWorld(new Vector3Int(x, y));
+            var center = Tilemaps.Ground.GetCellCenterWorld(new Vector3Int(x, y));
             var tile = new Tile(x, y, center);
             tile.GroundType = basicType;
             if (modifier != TileModifierTypeEnum.None)
@@ -169,7 +169,7 @@ public class LevelGenerator : MonoBehaviour
                 index++;
             }
         }
-        _groundTilemap.SetTiles(vectors,tileBases);
+        Tilemaps.Ground.SetTiles(vectors,tileBases);
     }
 
     public void SetupPlayers()
