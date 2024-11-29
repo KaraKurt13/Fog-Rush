@@ -36,6 +36,12 @@ public class ObstaclesGenerator : MonoBehaviour
         _isActive = true;
     }
 
+    public void Deactivate()
+    {
+        _isActive = false;
+        // delete all obstacles
+    }
+
     private void GenerateObstacle()
     {
         var obstacle = Instantiate(_obstaclePrefab, _spawnPosition, Quaternion.identity).GetComponent<MovingObstacle>();

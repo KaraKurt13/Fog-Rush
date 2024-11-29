@@ -43,4 +43,9 @@ public class TileLine
             }
         }
     }
+
+    public void Deactivate()
+    {
+        ObstaclesGenerator.
+    }
 }
