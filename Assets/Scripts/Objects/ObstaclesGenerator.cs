@@ -10,14 +10,16 @@ public class ObstaclesGenerator : MonoBehaviour
 
     private Vector3 _spawnPosition;
 
-    private void Start()
-    {
-        SetRandomValues();
-    }
+    private bool _isActive = false;
 
     private void Update()
     {
         
+    }
+
+    public void Activate(TileLine relatedLine)
+    {
+        SetRandomValues();
     }
 
     private void GenerateObstacle()
@@ -27,7 +29,7 @@ public class ObstaclesGenerator : MonoBehaviour
 
     public void SetRandomValues()
     {
-        _spawnInterval = 1f;
+        _spawnInterval = Random.Range(2f, 4f);
         _timeForSpawn = _spawnInterval;
     }
 }

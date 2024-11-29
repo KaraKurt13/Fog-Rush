@@ -28,8 +28,9 @@ public class Engine : MonoBehaviour
 
     public void EndGame(Player player, GameEndStatus status)
     {
-        FogWall.Deactivate();
         var stats = player.StatsTracker.GetStats();
+
+        FogWall.Deactivate();
         player.DisableMovement();
         player.StatsTracker.StopTracking();
 
