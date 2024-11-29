@@ -27,6 +27,7 @@ public class LevelGenerator : MonoBehaviour
 
     private TerrainData _terrainData;
 
+    [SerializeField] Transform _obstacleGeneratorsContainer;
     [SerializeField] GameObject _obstacleGeneratorPrefab;
 
     public TerrainData InitTerrain()
@@ -128,7 +129,9 @@ public class LevelGenerator : MonoBehaviour
         var possibleLines = _terrainData.TileLines.Random(6);
         foreach (var line in possibleLines)
         {
-            var obstacle = Instantiate(_obstacleGeneratorPrefab, line.
+            var obstacle = Instantiate(_obstacleGeneratorPrefab, _obstacleGeneratorsContainer).GetComponent<ObstaclesGenerator>();
+            obstacle.Init(line);
+            Engine.ObstacleGenerators.Add(obstacle);
         }
     }
 

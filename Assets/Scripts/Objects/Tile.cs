@@ -11,7 +11,7 @@ namespace Assets.Scripts.Terrain
 
         public TileModifierBase Modifier { get; set; }
 
-        public Vector2 Center { get; }
+        public Vector3 Center { get; }
 
         public int X { get; }
         

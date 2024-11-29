@@ -18,12 +18,18 @@ public class Engine : MonoBehaviour
 
     public FogWall FogWall;
 
+    public List<ObstaclesGenerator> ObstacleGenerators = new();
+
     private void Awake()
     {
         Find.Engine = this;
         Terrain = LevelGenerator.InitTerrain();
         LevelGenerator.SetupPlayers();
-        FogWall.Activate(0.3f);
+        //FogWall.Activate(0.3f);
+        foreach (var obstacle in ObstacleGenerators)
+        {
+            obstacle.Activate();
+        }
     }
 
     public void EndGame(Player player, GameEndStatus status)
