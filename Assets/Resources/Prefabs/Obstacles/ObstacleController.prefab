@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7009073070087982879}
   - component: {fileID: 2344823984963094873}
   m_Layer: 0
-  m_Name: ObstacleGenerator
+  m_Name: ObstacleController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

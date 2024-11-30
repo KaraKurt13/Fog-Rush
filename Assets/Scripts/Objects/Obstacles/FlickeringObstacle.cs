@@ -6,9 +6,14 @@ namespace Assets.Scripts.Obstacles
 {
     public class FlickeringObstacle : ObstacleBase
     {
+        public override void OnPlayerTouch(Player player)
+        {
+            Find.Engine.EndGame(player, GameEndStatus.Lose);
+        }
+
         public override void OnSpawn()
         {
-            throw new System.NotImplementedException();
+
         }
     }
 }

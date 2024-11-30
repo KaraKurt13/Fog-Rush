@@ -13,9 +13,9 @@ public class TileLine
 
     public TileLineTypeEnum Type { get; set; }
 
-    public ObstaclesGenerator ObstaclesGenerator { get; }
+    public ObstaclesController ObstaclesGenerator { get; }
 
-    public TileLine(List<Tile> tiles, int x, ObstaclesGenerator obstaclesGenerator = null)
+    public TileLine(List<Tile> tiles, int x, ObstaclesController obstaclesGenerator = null)
     {
         Tiles = tiles;
         X = x;
@@ -46,6 +46,6 @@ public class TileLine
 
     public void Deactivate()
     {
-        ObstaclesGenerator.
+        ObstaclesGenerator.Deactivate();
     }
 }

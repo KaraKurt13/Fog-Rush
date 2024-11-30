@@ -7,5 +7,7 @@ namespace Assets.Scripts.Obstacles
     public abstract class ObstacleBase : MonoBehaviour
     {
         public abstract void OnSpawn();
+
+        public abstract void OnPlayerTouch(Player player);
     }
 }

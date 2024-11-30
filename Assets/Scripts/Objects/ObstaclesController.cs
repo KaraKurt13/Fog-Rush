@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ObstaclesGenerator : MonoBehaviour
+public class ObstaclesController : MonoBehaviour
 {
     private float _spawnInterval, _timeForSpawn;
 

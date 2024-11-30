@@ -7,6 +7,8 @@ namespace Assets.Scripts.Obstacles
 {
     public class MovingObstacle : ObstacleBase
     {
+        public Engine Engine;
+
         private Vector3 _direction;
 
         private float _endingY;
@@ -35,7 +37,13 @@ namespace Assets.Scripts.Obstacles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            Debug.Log("player touched obstacle");
+            if (collision.TryGetComponent<Player>(out var player))
+                OnPlayerTouch(player);
+        }
+
+        public override void OnPlayerTouch(Player player)
+        {
+            Find.Engine.EndGame(player, GameEndStatus.Lose);
         }
     }
 }

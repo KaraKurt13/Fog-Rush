@@ -18,7 +18,7 @@ public class Engine : MonoBehaviour
 
     public FogWall FogWall;
 
-    public List<ObstaclesGenerator> ObstacleGenerators = new();
+    public List<ObstaclesController> ObstacleGenerators = new();
 
     private void Awake()
     {
