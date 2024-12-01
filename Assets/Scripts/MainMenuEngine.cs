@@ -1,5 +1,6 @@
 using Assets.Scripts.Facebook;
 using Assets.Scripts.UI;
+using Facebook.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,7 +14,15 @@ namespace Assets.Scripts.MainMenu
 
         private void Start()
         {
-            FacebookManager.Initialize();
+            Screen.orientation = ScreenOrientation.Portrait;
+            if (FB.IsLoggedIn)
+            {
+                OnSuccessfullLogin();
+            }
+            else
+            {
+                FacebookManager.Initialize();
+            }
         }
 
         public void OnSuccessfullLogin()

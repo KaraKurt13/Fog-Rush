@@ -23,10 +23,11 @@ public class Engine : MonoBehaviour
 
     private void Awake()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
         Find.Engine = this;
         Terrain = LevelGenerator.InitTerrain();
         LevelGenerator.SetupPlayers();
-        //FogWall.Activate(0.3f);
+        FogWall.Activate(0.3f);
         foreach (var obstacle in ObstacleControllers)
         {
             obstacle.Activate();
