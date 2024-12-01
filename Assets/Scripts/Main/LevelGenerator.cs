@@ -1,3 +1,4 @@
+using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
 using Assets.Scripts.TileModifiers;
 using System;
@@ -129,9 +130,9 @@ public class LevelGenerator : MonoBehaviour
         var possibleLines = _terrainData.TileLines.Random(6);
         foreach (var line in possibleLines)
         {
-            var obstacle = Instantiate(_obstacleGeneratorPrefab, _obstacleGeneratorsContainer).GetComponent<ObstaclesController>();
+            var obstacle = Instantiate(_obstacleGeneratorPrefab, _obstacleGeneratorsContainer).GetComponent<ObstaclesControllerBase>();
             obstacle.Init(line);
-            Engine.ObstacleGenerators.Add(obstacle);
+            Engine.ObstacleControllers.Add(obstacle);
         }
     }
 

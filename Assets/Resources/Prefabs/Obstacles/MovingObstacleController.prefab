@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7009073070087982879}
   - component: {fileID: 2344823984963094873}
   m_Layer: 0
-  m_Name: ObstacleController
+  m_Name: MovingObstacleController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 697ee85cb2bbb5c40b9ffedb12a6ec2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsActive: 0
   _obstaclePrefab: {fileID: 6956727515491258746, guid: 13d1c405d2341bd4c831e195b3f6a301,
     type: 3}

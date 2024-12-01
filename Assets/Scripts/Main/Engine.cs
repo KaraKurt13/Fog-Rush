@@ -1,3 +1,4 @@
+using Assets.Scripts.Obstacles;
 using Assets.Scripts.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ public class Engine : MonoBehaviour
 
     public FogWall FogWall;
 
-    public List<ObstaclesController> ObstacleGenerators = new();
+    public List<ObstaclesControllerBase> ObstacleControllers = new();
 
     private void Awake()
     {
@@ -26,7 +27,7 @@ public class Engine : MonoBehaviour
         Terrain = LevelGenerator.InitTerrain();
         LevelGenerator.SetupPlayers();
         //FogWall.Activate(0.3f);
-        foreach (var obstacle in ObstacleGenerators)
+        foreach (var obstacle in ObstacleControllers)
         {
             obstacle.Activate();
         }

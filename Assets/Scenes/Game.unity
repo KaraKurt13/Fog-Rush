@@ -279,7 +279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 274825446}
   m_Layer: 0
-  m_Name: ObstacleGenerators
+  m_Name: ObstacleControllers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3419,7 +3419,7 @@ MonoBehaviour:
   InputController: {fileID: 662418984}
   GameMenuUI: {fileID: 1743720685}
   FogWall: {fileID: 253581665}
-  ObstacleGenerators: []
+  ObstacleControllers: []
 --- !u!1 &2058856731
 GameObject:
   m_ObjectHideFlags: 0

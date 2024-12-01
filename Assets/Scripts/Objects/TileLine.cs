@@ -1,3 +1,4 @@
+using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,13 +14,13 @@ public class TileLine
 
     public TileLineTypeEnum Type { get; set; }
 
-    public ObstaclesController ObstaclesGenerator { get; }
+    public ObstaclesControllerBase ObstacleController { get; }
 
-    public TileLine(List<Tile> tiles, int x, ObstaclesController obstaclesGenerator = null)
+    public TileLine(List<Tile> tiles, int x, ObstaclesControllerBase obstaclesGenerator = null)
     {
         Tiles = tiles;
         X = x;
-        ObstaclesGenerator = obstaclesGenerator;
+        ObstacleController = obstaclesGenerator;
     }
 
     public Tile GetTile(int y)
@@ -46,6 +47,6 @@ public class TileLine
 
     public void Deactivate()
     {
-        ObstaclesGenerator.Deactivate();
+        ObstacleController.Deactivate();
     }
 }
