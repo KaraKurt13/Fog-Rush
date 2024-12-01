@@ -28,8 +28,8 @@ public class LevelGenerator : MonoBehaviour
 
     private TerrainData _terrainData;
 
-    [SerializeField] Transform _obstacleGeneratorsContainer;
-    [SerializeField] GameObject _obstacleGeneratorPrefab;
+    [SerializeField] Transform _obstaclesControllerContainer;
+    [SerializeField] GameObject _movingObstaclesController, _flickeringObstaclesController;
 
     public TerrainData InitTerrain()
     {
@@ -130,7 +130,9 @@ public class LevelGenerator : MonoBehaviour
         var possibleLines = _terrainData.TileLines.Random(6);
         foreach (var line in possibleLines)
         {
-            var obstacle = Instantiate(_obstacleGeneratorPrefab, _obstacleGeneratorsContainer).GetComponent<ObstaclesControllerBase>();
+            var randomValue = UnityEngine.Random.Range(0, 2);
+            var obstaclePrefab = randomValue == 0 ? _movingObstaclesController : _flickeringObstaclesController;
+            var obstacle = Instantiate(obstaclePrefab, _obstaclesControllerContainer).GetComponent<ObstaclesControllerBase>();
             obstacle.Init(line);
             Engine.ObstacleControllers.Add(obstacle);
         }
@@ -199,7 +201,6 @@ public class LevelGenerator : MonoBehaviour
             if (tileBase == null) continue;
 
             _tileBases.Add(type, tileBase);
-            Debug.Log(type);
         }
 
         foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())

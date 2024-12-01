@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8518715422889972022}
   - component: {fileID: 4168299513962254610}
   - component: {fileID: 8456022506939128343}
-  - component: {fileID: 6046172824901127231}
+  - component: {fileID: 4154940022384979319}
   m_Layer: 7
   m_Name: FlickeringObstacle
   m_TagString: Untagged
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.84, y: 1.28}
   m_EdgeRadius: 0
---- !u!114 &6046172824901127231
+--- !u!114 &4154940022384979319
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,7 +140,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6956727515491258746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa50f326a19dd214184b8e84988879fb, type: 3}
+  m_Script: {fileID: 11500000, guid: d9b825f39e457a14fa699ca08e4a42c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Engine: {fileID: 0}
+  IsActive: 0
+  _spriteRenderer: {fileID: 4168299513962254610}
+  _collider: {fileID: 8456022506939128343}

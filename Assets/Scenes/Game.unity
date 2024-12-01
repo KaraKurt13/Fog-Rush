@@ -508,8 +508,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Engine: {fileID: 1984736717}
   Tilemaps: {fileID: 567430491}
-  _obstacleGeneratorsContainer: {fileID: 274825446}
-  _obstacleGeneratorPrefab: {fileID: 3740267048071474520, guid: 49914e7d455bace449c5c1e3910aef10,
+  _obstaclesControllerContainer: {fileID: 0}
+  _movingObstaclesController: {fileID: 3740267048071474520, guid: 49914e7d455bace449c5c1e3910aef10,
+    type: 3}
+  _flickeringObstaclesController: {fileID: 3740267048071474520, guid: 7258eb9a15e4e3743bf30aa2e0022324,
     type: 3}
 --- !u!1 &563341759
 GameObject:

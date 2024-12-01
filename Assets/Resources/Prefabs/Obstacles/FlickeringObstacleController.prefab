@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7009073070087982879}
   - component: {fileID: -2430123098306746098}
   m_Layer: 0
-  m_Name: FlickeringObstacleController 1
+  m_Name: FlickeringObstacleController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,4 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsActive: 0
-  _flickeringObstaclePrefab: {fileID: 0}
+  _flickeringObstaclePrefab: {fileID: 6956727515491258746, guid: 594640b949e833945960c42c873dbba2,
+    type: 3}
