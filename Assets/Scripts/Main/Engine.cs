@@ -27,7 +27,7 @@ public class Engine : MonoBehaviour
         Find.Engine = this;
         Terrain = LevelGenerator.InitTerrain();
         LevelGenerator.SetupPlayers();
-        FogWall.Activate(0.3f);
+        FogWall.Activate(1.2f);
         foreach (var obstacle in ObstacleControllers)
         {
             obstacle.Activate();

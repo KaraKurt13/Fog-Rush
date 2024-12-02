@@ -19,7 +19,7 @@ namespace Assets.Scripts.Obstacles
 
         [SerializeField] GameObject _obstaclePrefab;
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (IsActive)
                 Tick();
@@ -55,7 +55,7 @@ namespace Assets.Scripts.Obstacles
         private void GenerateObstacle()
         {
             var obstacle = Instantiate(_obstaclePrefab, _spawnPosition, Quaternion.identity).GetComponent<MovingObstacle>();
-            obstacle.Activate(_moveDirection, 0.01f, _endingTile);
+            obstacle.Activate(_moveDirection, 0.08f, _endingTile);
         }
 
         private void SetRandomValues()
@@ -68,7 +68,7 @@ namespace Assets.Scripts.Obstacles
 
             _endingTile = direction == 1 ? lastTile : firstTile;
             _spawnPosition = startTile.Center - _moveDirection * 2;
-            _spawnInterval = Random.Range(2f, 4f);
+            _spawnInterval = Random.Range(1f, 2f);
             _timeForSpawn = _spawnInterval;
         }
     }

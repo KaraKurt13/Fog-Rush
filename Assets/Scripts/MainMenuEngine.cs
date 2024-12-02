@@ -10,6 +10,8 @@ namespace Assets.Scripts.MainMenu
     {
         public FacebookManager FacebookManager;
 
+        public FacebookAdsManager FacebookAdsManager;
+
         public MainMenuUI MainMenuUI;
 
         private void Start()
@@ -17,6 +19,7 @@ namespace Assets.Scripts.MainMenu
             Screen.orientation = ScreenOrientation.Portrait;
             if (FB.IsLoggedIn)
             {
+                FacebookAdsManager.ShowAd();
                 OnSuccessfullLogin();
             }
             else

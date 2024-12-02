@@ -67,9 +67,6 @@ namespace Assets.Scripts.Facebook
             if (FB.IsLoggedIn)
             {
                 await Task.WhenAll(GetUserData(), GetUserPicture());
-                FB.AppRequest(
-                    "I need your help!"
-                    );
                 MenuEngine.OnSuccessfullLogin();
             }
             else
@@ -117,7 +114,6 @@ namespace Assets.Scripts.Facebook
                     var texture = result.Texture;
                     var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.one * 0.5f);
                     PlayerData.Icon = sprite;
-                    Debug.Log("User picture loaded.");
                 }
                 else
                 {

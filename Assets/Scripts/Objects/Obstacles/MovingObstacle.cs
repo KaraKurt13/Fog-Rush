@@ -22,7 +22,7 @@ namespace Assets.Scripts.Obstacles
             _endingY = (endingTile.Center + (_direction * 2f)).y;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             var pos = transform.position;
             transform.position = pos + (_direction * _speed);
