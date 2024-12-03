@@ -2,13 +2,8 @@ apply plugin: 'com.android.library'
 **APPLY_PLUGINS**
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
-    implementation 'com.facebook.android:facebook-android-sdk:17.0.2'
-    implementation 'com.facebook.android:facebook-gamingservices:17.0.2'
-    implementation 'com.facebook.android:audience-network-sdk:6.18.0'
-    implementation(name: 'com.google.firebase.firebase-app-unity-12.4.1', ext: 'aar')
-    implementation(name: 'com.google.firebase.firebase-analytics-unity-12.4.1', ext: 'aar')
-    implementation(name: 'com.google.firebase.firebase-auth-23.1.0', ext: 'aar')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     
 // Android Resolver Dependencies Start
     implementation 'com.android.support:appcompat-v7:25.3.1' // Facebook.Unity.Editor.AndroidSupportLibraryResolver.addSupportLibraryDependency
