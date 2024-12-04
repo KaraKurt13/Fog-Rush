@@ -31,7 +31,7 @@ public class Engine : MonoBehaviour
         Find.Engine = this;
         Terrain = LevelGenerator.GenerateLevel(Prefab.GetComponent<LevelPrefab>().ConvertPrefabToData());
         LevelGenerator.SetupPlayers();
-        FogWall.Activate(1.2f);
+        //FogWall.Activate(1.2f);
         foreach (var obstacle in ObstacleControllers)
         {
             obstacle.Activate();

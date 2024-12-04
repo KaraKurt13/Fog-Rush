@@ -1,3 +1,4 @@
+using Assets.Scripts.Main.LevelData;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +30,9 @@ namespace Assets.Scripts.Obstacles
             IsActive = false;
         }
 
-        public override void Init(TileLine line)
+        public override void Init(ObstacleData baseData)
         {
+            /*var data = baseData as FlickeringObstacleData;
             var obstaclesCount = Random.Range(6,8);
             var randomTiles = line.Tiles.Where(t => t.IsWalkable()).ToList().Random(obstaclesCount);
             foreach (var tile in randomTiles)
@@ -40,7 +42,7 @@ namespace Assets.Scripts.Obstacles
                 _obstacles.Add(obstacle);
             }
             _flickeringInterval = 3f;
-            _timeTillFlicker = _flickeringInterval;
+            _timeTillFlicker = _flickeringInterval;*/
         }
 
         protected override void Tick()

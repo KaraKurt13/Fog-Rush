@@ -1,3 +1,4 @@
+using Assets.Scripts.Main.LevelData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Assets.Scripts.Obstacles
 
         public abstract void Deactivate();
 
-        public abstract void Init(TileLine line);
+        public abstract void Init(ObstacleData baseData);
 
         protected abstract void Tick();
     }

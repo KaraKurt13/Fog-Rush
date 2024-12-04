@@ -1,3 +1,4 @@
+using Assets.Scripts.Main.LevelData;
 using Assets.Scripts.TileModifiers;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ namespace Assets.Scripts.Terrain
     public class Tile
     {
         public GroundTypeEnum GroundType { get; set; }
+
+        public TerrainLayerEnum Layer { get; set; }
 
         public TileModifierBase Modifier { get; set; }
 
@@ -27,7 +30,7 @@ namespace Assets.Scripts.Terrain
 
         public bool IsWalkable()
         {
-            return GroundType != GroundTypeEnum.River;
+            return Layer == TerrainLayerEnum.Ground;
         }
 
         public Tile(int x, int y, Vector2 center)

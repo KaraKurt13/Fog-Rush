@@ -1,3 +1,4 @@
+using Assets.Scripts.Obstacles;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace Assets.Scripts.Main.LevelData
     {
         public override ObstacleTypeEnum Type => ObstacleTypeEnum.Moving;
 
-        public int MoveDirection;
+        public OrientationTypeEnum MoveDirection;
 
         public float MoveSpeed;
 

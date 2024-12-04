@@ -8,13 +8,15 @@ namespace Assets.Scripts.Main.LevelData
     {
         public int Width, Height;
 
-        public GroundTypeEnum[,] TerrainData;
+        public TileData[,] TerrainData;
+
+        public List<ObstacleData> ObstacleControllers;
 
         public LevelTerrainData(int width, int height)
         {
             Width = width;
             Height = height;
-            TerrainData = new GroundTypeEnum[Width, Height];
+            TerrainData = new TileData[Width, Height];
         }
     }
 }

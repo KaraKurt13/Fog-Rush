@@ -1,3 +1,4 @@
+using Assets.Scripts.Main.LevelData;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
 using System.Collections;
@@ -12,7 +13,8 @@ namespace Assets.Scripts.Obstacles
         private float _spawnInterval, _timeForSpawn;
 
         private Vector3 _spawnPosition;
-        private Vector3 _moveDirection;
+        private float _moveSpeed;
+        private OrientationTypeEnum _moveDirection;
 
         private TileLine _relatedLine;
         private Tile _endingTile;
@@ -25,10 +27,24 @@ namespace Assets.Scripts.Obstacles
                 Tick();
         }
 
-        public override void Init(TileLine relatedLine)
+        public override void Init(ObstacleData baseData)
         {
-            _relatedLine = relatedLine;
-            SetRandomValues();
+            var data = baseData as MovingObstacleData;
+            var direction = data.MoveDirection;
+            var moveDirection = direction == OrientationTypeEnum.Up ? 1 : -1;
+            var tileLine = Find.TerrainData.GetTileLine(data.LineNumber);
+            var firstTile = tileLine.First();
+            var lastTile = tileLine.Last();
+            var startTile = direction == OrientationTypeEnum.Up ? firstTile : lastTile;
+            var vector = new Vector3(0, moveDirection, 0);
+
+            _moveDirection = direction;
+            _moveSpeed = data.MoveSpeed;
+            _endingTile = direction == OrientationTypeEnum.Up ? lastTile : firstTile;
+            _spawnPosition = startTile.Center - vector * 2;
+            _spawnInterval = data.SpawnInterval;
+            _timeForSpawn = _spawnInterval;
+            _obstaclePrefab = data.ObstaclePrefab;
         }
 
         public override void Activate()
@@ -55,21 +71,7 @@ namespace Assets.Scripts.Obstacles
         private void GenerateObstacle()
         {
             var obstacle = Instantiate(_obstaclePrefab, _spawnPosition, Quaternion.identity).GetComponent<MovingObstacle>();
-            obstacle.Activate(_moveDirection, 0.08f, _endingTile);
-        }
-
-        private void SetRandomValues()
-        {
-            var direction = UnityEngine.Random.Range(0, 2) == 0 ? -1 : 1;
-            _moveDirection = new Vector3(0, direction, 0);
-            var firstTile = _relatedLine.Tiles.First();
-            var lastTile = _relatedLine.Tiles.Last();
-            var startTile = direction == 1 ? firstTile : lastTile;
-
-            _endingTile = direction == 1 ? lastTile : firstTile;
-            _spawnPosition = startTile.Center - _moveDirection * 2;
-            _spawnInterval = Random.Range(1f, 2f);
-            _timeForSpawn = _spawnInterval;
+            obstacle.Activate(_moveDirection, _moveSpeed, _endingTile);
         }
     }
 }

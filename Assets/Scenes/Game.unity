@@ -618,7 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ground: {fileID: 2109113046}
-  Water: {fileID: 1025604463}
+  Gap: {fileID: 1025604463}
   Fog: {fileID: 1546680462}
 --- !u!1 &582651149
 GameObject:
@@ -1711,7 +1711,7 @@ GameObject:
   - component: {fileID: 1025604463}
   - component: {fileID: 1025604462}
   m_Layer: 0
-  m_Name: Water
+  m_Name: Gap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

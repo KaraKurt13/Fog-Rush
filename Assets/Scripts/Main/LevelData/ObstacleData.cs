@@ -1,3 +1,4 @@
+using Assets.Scripts.Obstacles;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

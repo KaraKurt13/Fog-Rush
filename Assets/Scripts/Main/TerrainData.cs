@@ -18,10 +18,16 @@ public class TerrainData
         return Tiles[x,y];
     }
 
-    public TileLine GetTileLine(int x)
+    public IEnumerable<Tile> GetTileLine(int x)
     {
-        if (x < 0 || x >= Width) return null;
-        return TileLines[x];
+        if (x < 0 || x >= Width)
+        {
+            yield break;
+        }
+        for (int i = 0; i < Height; i++)
+        {
+            yield return Tiles[x,i];
+        }
     }
 
     public TerrainData(int width, int height)

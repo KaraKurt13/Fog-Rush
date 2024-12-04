@@ -16,11 +16,11 @@ public class TileLine
 
     public ObstaclesControllerBase ObstacleController { get; }
 
-    public TileLine(List<Tile> tiles, int x, ObstaclesControllerBase obstaclesGenerator = null)
+    public TileLine(List<Tile> tiles, int x, ObstaclesControllerBase obstacleController = null)
     {
         Tiles = tiles;
         X = x;
-        ObstacleController = obstaclesGenerator;
+        ObstacleController = obstacleController;
     }
 
     public Tile GetTile(int y)
@@ -40,7 +40,7 @@ public class TileLine
 
             if (neighbour != null)
             {
-                Neighbours.Add(neighbour);
+                //Neighbours.Add(neighbour);
             }
         }
     }

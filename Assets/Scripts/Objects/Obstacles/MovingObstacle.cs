@@ -9,25 +9,38 @@ namespace Assets.Scripts.Obstacles
     {
         public Engine Engine;
 
-        private Vector3 _direction;
+        private OrientationTypeEnum _direction;
+
+        private Vector3 _directionValue;
 
         private float _endingY;
 
         private float _speed;
 
-        public void Activate(Vector3 direction, float speed, Tile endingTile)
+        public void Activate(OrientationTypeEnum direction, float speed, Tile endingTile)
         {
             _direction = direction;
             _speed = speed;
-            _endingY = (endingTile.Center + (_direction * 2f)).y;
+            var value = direction == OrientationTypeEnum.Up ? 1 : -1;
+            _directionValue = new Vector3(0, value, 0);
+            _endingY = (endingTile.Center + (_directionValue * 2f)).y;
         }
 
         private void FixedUpdate()
         {
             var pos = transform.position;
-            transform.position = pos + (_direction * _speed);
-            if (transform.position.y >= _endingY)
+            transform.position = pos + (_directionValue * _speed);
+            if (EndingCrossed())
                 Destroy(gameObject);
+        }
+
+        private bool EndingCrossed()
+        {
+            if (_direction == OrientationTypeEnum.Up)
+                return transform.position.y >= _endingY;
+            if (_direction == OrientationTypeEnum.Down)
+                return transform.position.y <= _endingY;
+            return false;
         }
 
         public override void OnSpawn()

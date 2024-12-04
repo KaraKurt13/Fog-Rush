@@ -69,10 +69,10 @@ public class FogWall : MonoBehaviour
 
     private void OnLineCross()
     {
-        var line = Engine.Terrain.GetTileLine(_currentX);
-        if (line == null) return;
+        var lineTiles = Engine.Terrain.GetTileLine(_currentX);
+        if (lineTiles.Count() == 0) return;
 
-        var vectors = line.Tiles.Select(t => new Vector3Int(t.X, t.Y, 0)).ToArray();
+        var vectors = lineTiles.Select(t => new Vector3Int(t.X, t.Y, 0)).ToArray();
         var tileBases = Enumerable.Repeat(_fogTilebase, vectors.Count()).ToArray();
         _fogTilemap.SetTiles(vectors, tileBases);
     }

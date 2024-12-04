@@ -1,4 +1,5 @@
 using Assets.Scripts.Main.LevelData;
+using Assets.Scripts.Terrain;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Assets.Scripts.Main.LevelData
 {
     public class LevelPrefab : MonoBehaviour
     {
-        public Tilemap Terrain;
+        public Tilemap Ground, Gap;
 
         public List<ObstacleData> ObstaclesData = new();
 
@@ -17,32 +18,40 @@ namespace Assets.Scripts.Main.LevelData
 
         public LevelTerrainData ConvertPrefabToData()
         {
-            var bounds = Terrain.cellBounds;
+            var bounds = Ground.cellBounds;
             var terrainSize = bounds.size;
             var width = terrainSize.x;
             var height = terrainSize.y;
             var data = new LevelTerrainData(width, height);
-            var tiles = Terrain.GetTilesBlock(bounds);
+            var groundTiles = Ground.GetTilesBlock(bounds);
+            var gapTiles = Gap.GetTilesBlock(bounds);
 
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < height; j++)
                 {
                     var index = i + j * width;
-                    var tile = tiles[index];
-                    if (tile == null) continue;
-                    var type = (GroundTypeEnum)Enum.Parse(typeof(GroundTypeEnum), tile.name);
+                    var tileData = new TileData();
+                    var tile = groundTiles[index];
 
-                    data.TerrainData[i,j] = type;
+                    if (tile == null)
+                    {
+                        tile = gapTiles[index];
+                        tileData.TerrainLayer = TerrainLayerEnum.Gap;
+                    }
+                    else
+                    {
+                        tileData.TerrainLayer = TerrainLayerEnum.Ground;
+                    }
+
+                    var type = (GroundTypeEnum)Enum.Parse(typeof(GroundTypeEnum), tile.name);
+                    tileData.GroundType = type;
+                    data.TerrainData[i,j] = tileData;
                 }
             }
+            data.ObstacleControllers = ObstaclesData;
 
             return data;
-        }
-
-        private void GenerateObstacleController(ObstacleData data)
-        {
-
         }
     }
 }
