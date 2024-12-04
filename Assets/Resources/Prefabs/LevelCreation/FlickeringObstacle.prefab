@@ -47,3 +47,4 @@ MonoBehaviour:
   LineNumber: 0
   ObstaclePrefab: {fileID: 0}
   FlickeringInterval: 0
+  RowNums: 

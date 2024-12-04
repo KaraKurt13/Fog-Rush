@@ -38,7 +38,7 @@ public class LevelGenerator : MonoBehaviour
         InitData();
         GenerateBasicTerrain();
         GenerateObstacles();
-        //SetupTilemap();
+        SetupTilemap();
         return _terrainData;
     }
 
@@ -61,6 +61,7 @@ public class LevelGenerator : MonoBehaviour
                 tile.GroundType = groundType;
                 tile.Layer = tileData.TerrainLayer;
 
+                // Replace later with SetupTilemaps() with SetTiles instead
                 switch (tileData.TerrainLayer)
                 {
                     case TerrainLayerEnum.Ground:
@@ -84,23 +85,6 @@ public class LevelGenerator : MonoBehaviour
         {
             tile.InitNeighbours(_terrainData);
         }
-
-       /* for (int i = 0; i < _mapWidth; i++)
-        {
-            
-            var line = GenerateLine(i, modifier);
-            Lines.Enqueue(line);
-            _terrainData.TileLines[i] = line;
-        }
-       */
-        /*foreach (var line in _terrainData.TileLines)
-        {
-            line.InitNeigbours(_terrainData);
-            foreach (var tile in line.Tiles)
-            {
-                tile.InitNeighbours(_terrainData);
-            }
-        }*/
     }
 
     private void GenerateObstacles()
@@ -121,8 +105,8 @@ public class LevelGenerator : MonoBehaviour
                     }
                 case ObstacleTypeEnum.Flickering:
                     {
-                        var flickeringObstacle = Instantiate(_movingObstaclesController, _obstaclesControllerContainer)
-                            .GetComponent<FlickeringObstacleController>();
+                        var flickeringObstacle = Instantiate(_flickeringObstaclesController, _obstaclesControllerContainer)
+                            .GetComponent<FlickeringObstaclesController>();
                         flickeringObstacle.Init(data);
                         Engine.ObstacleControllers.Add(flickeringObstacle);
                         break;
@@ -131,45 +115,8 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    /*private TileLine GenerateLine(int x, TileModifierTypeEnum modifier = TileModifierTypeEnum.None)
-    {
-        var tiles = new List<Tile>();
-        var basicType = GroundTypeEnum.Grass;
-
-        for (int y = 0; y < _mapHeight; y++)
-        {
-            
-            tile.GroundType = basicType;
-            if (modifier != TileModifierTypeEnum.None)
-            {
-                tile.Modifier = _tileModifiers[modifier];
-            }
-            tiles.Add(tile);
-            _terrainData.Tiles[x, y] = tile;
-        }
-
-        var tileLine = new TileLine(tiles, x);
-        return tileLine;
-    }*/
-
     private void SetupTilemap()
     {
-        var tilesCount = _mapHeight * _mapWidth;
-        var vectors = new Vector3Int[tilesCount];
-        var tileBases = new TileBase[tilesCount];
-
-        int index = 0;
-        for (int x = 0; x < _mapWidth; x++)
-        {
-            for (int y = 0; y < _mapHeight; y++)
-            {
-                var tile = _terrainData.GetTile(x, y);
-                vectors[index] = new Vector3Int(x, y);
-                tileBases[index] = _tileBases[tile.GroundType];
-                index++;
-            }
-        }
-        Tilemaps.Ground.SetTiles(vectors,tileBases);
     }
 
     public void SetupPlayers()
@@ -199,67 +146,4 @@ public class LevelGenerator : MonoBehaviour
             }
         }
     }
-
-
-    /*private void GenerateRivers()
-    {
-        var randomRiverLines = MathHelper.GetRandomUniqueNumbers(1, _mapWidth - 2, 6).OrderBy(t => t).ToList();
-        var lines = new List<TileLine>();
-        for (int i = 0; i < randomRiverLines.Count; i++)
-        {
-            var tileLine = _terrainData.GetTileLine(randomRiverLines[i]);
-            tileLine.Type = TileLineTypeEnum.River;
-            lines.Add(tileLine);
-            foreach (var tile in tileLine.Tiles)
-            {
-                tile.GroundType = GroundTypeEnum.River;
-            }
-        }
-
-        GenerateBridges(lines);
-    }
-
-    private void GenerateBridges(List<TileLine> rivers)
-    {
-        HashSet<TileLine> processedLines = new();
-        while (rivers.Count > 0)
-        {
-            var currentLine = rivers[0];
-            Queue<TileLine> queue = new();
-            queue.Enqueue(currentLine);
-            List<TileLine> connectedLines = new();
-            while (queue.Count > 0)
-            {
-                var line = queue.Dequeue();
-                if (processedLines.Contains(line))
-                    continue;
-                processedLines.Add(line);
-                connectedLines.Add(line);
-
-                foreach (var neighbour in line.Neighbours)
-                {
-                    if (neighbour.Type == TileLineTypeEnum.River && !processedLines.Contains(neighbour))
-                    {
-                        queue.Enqueue(neighbour);
-                    }
-                }
-            }
-
-            if (connectedLines.Count >= 1)
-            {
-                var randomBridgesCount = UnityEngine.Random.Range(2, 4);
-                var randomNums = MathHelper.GetRandomUniqueNumbers(0, _mapHeight - 1, randomBridgesCount);
-                foreach (var num in randomNums)
-                {
-                    foreach (var tileLine in connectedLines)
-                    {
-                        var tile = tileLine.GetTile(num);
-                        tile.GroundType = GroundTypeEnum.Bridge;
-                    }
-                }
-            }
-
-            rivers.RemoveAll(l => processedLines.Contains(l));
-        }
-    }*/
 }

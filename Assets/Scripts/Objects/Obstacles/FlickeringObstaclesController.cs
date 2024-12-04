@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Obstacles
 {
-    public class FlickeringObstacleController : ObstaclesControllerBase
+    public class FlickeringObstaclesController : ObstaclesControllerBase
     {
         [SerializeField] GameObject _flickeringObstaclePrefab;
 
@@ -32,17 +32,17 @@ namespace Assets.Scripts.Obstacles
 
         public override void Init(ObstacleData baseData)
         {
-            /*var data = baseData as FlickeringObstacleData;
-            var obstaclesCount = Random.Range(6,8);
-            var randomTiles = line.Tiles.Where(t => t.IsWalkable()).ToList().Random(obstaclesCount);
-            foreach (var tile in randomTiles)
+            var data = baseData as FlickeringObstacleData;
+            for (int i = 0; i < data.RowNums.Count; i++)
             {
+                var row = data.RowNums[i];
+                var tile = Find.TerrainData.GetTile(data.LineNumber, row);
                 var spawnPos = tile.Center;
-                var obstacle = Instantiate(_flickeringObstaclePrefab, spawnPos, Quaternion.identity).GetComponent<FlickeringObstacle>();
+                var obstacle = Instantiate(data.ObstaclePrefab, spawnPos, Quaternion.identity).GetComponent<FlickeringObstacle>();
                 _obstacles.Add(obstacle);
             }
-            _flickeringInterval = 3f;
-            _timeTillFlicker = _flickeringInterval;*/
+            _flickeringInterval = data.FlickeringInterval;
+            _timeTillFlicker = _flickeringInterval;
         }
 
         protected override void Tick()
