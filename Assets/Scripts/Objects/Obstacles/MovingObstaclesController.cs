@@ -39,7 +39,7 @@ namespace Assets.Scripts.Obstacles
             var vector = new Vector3(0, moveDirection, 0);
 
             _moveDirection = direction;
-            _moveSpeed = data.MoveSpeed;
+            _moveSpeed = data.MoveSpeedPerSecond / TimeHelper.TicksPerSecond;
             _endingTile = direction == OrientationTypeEnum.Up ? lastTile : firstTile;
             _spawnPosition = startTile.Center - vector * 2;
             _spawnInterval = TimeHelper.SecondsToTicks(data.SpawnInterval);

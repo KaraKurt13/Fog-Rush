@@ -28,13 +28,12 @@ namespace Assets.Scripts.Obstacles
 
         private void FixedUpdate()
         {
-            var pos = transform.position;
-            transform.position = pos + (_directionValue * _speed);
-            if (EndingCrossed())
+            transform.position += (_directionValue * _speed);
+            if (EndingReached())
                 Destroy(gameObject);
         }
 
-        private bool EndingCrossed()
+        private bool EndingReached()
         {
             if (_direction == OrientationTypeEnum.Up)
                 return transform.position.y >= _endingY;
