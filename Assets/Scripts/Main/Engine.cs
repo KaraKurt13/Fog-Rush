@@ -1,3 +1,4 @@
+using Assets.Scripts.Main.LevelData;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.UI;
 using System.Collections;
@@ -21,11 +22,14 @@ public class Engine : MonoBehaviour
 
     public List<ObstaclesControllerBase> ObstacleControllers = new();
 
+    //TEMP
+    public GameObject Prefab;
+
     private void Awake()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         Find.Engine = this;
-        Terrain = LevelGenerator.InitTerrain();
+        Terrain = LevelGenerator.GenerateLevel(Prefab.GetComponent<LevelPrefab>().ConvertPrefabToData());
         LevelGenerator.SetupPlayers();
         FogWall.Activate(1.2f);
         foreach (var obstacle in ObstacleControllers)

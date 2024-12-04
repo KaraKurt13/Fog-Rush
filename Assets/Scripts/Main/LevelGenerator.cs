@@ -1,3 +1,4 @@
+using Assets.Scripts.Main.LevelData;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
 using Assets.Scripts.TileModifiers;
@@ -31,13 +32,23 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] Transform _obstaclesControllerContainer;
     [SerializeField] GameObject _movingObstaclesController, _flickeringObstaclesController;
 
-    public TerrainData InitTerrain()
+    public TerrainData GenerateLevel(LevelTerrainData data)
     {
         InitData();
-        GenerateBasicTerrain();
-        GenerateRivers();
-        GenerateObstacles();
-        SetupTilemap();
+        for (int i = 0; i < data.Width; i++)
+        {
+            for (int j = 0; j < data.Height; j++)
+            {
+                var tile = data.TerrainData[i, j];
+                if (tile == GroundTypeEnum.None) continue;
+                var tileBase = _tileBases[tile];
+                Tilemaps.Ground.SetTile(new Vector3Int(i, j), tileBase);
+            }
+        }
+        //GenerateBasicTerrain();
+        //GenerateRivers();
+        //GenerateObstacles();
+        //SetupTilemap();
         return _terrainData;
     }
 
