@@ -10,7 +10,7 @@ namespace Assets.Scripts.Obstacles
 {
     public class MovingObstaclesController : ObstaclesControllerBase
     {
-        private float _spawnInterval, _timeForSpawn;
+        private int _spawnInterval, _ticksForSpawn;
 
         private Vector3 _spawnPosition;
         private float _moveSpeed;
@@ -42,8 +42,8 @@ namespace Assets.Scripts.Obstacles
             _moveSpeed = data.MoveSpeed;
             _endingTile = direction == OrientationTypeEnum.Up ? lastTile : firstTile;
             _spawnPosition = startTile.Center - vector * 2;
-            _spawnInterval = data.SpawnInterval;
-            _timeForSpawn = _spawnInterval;
+            _spawnInterval = TimeHelper.SecondsToTicks(data.SpawnInterval);
+            _ticksForSpawn = _spawnInterval;
             _obstaclePrefab = data.ObstaclePrefab;
         }
 
@@ -60,11 +60,11 @@ namespace Assets.Scripts.Obstacles
 
         protected override void Tick()
         {
-            _timeForSpawn -= Time.deltaTime;
-            if (_timeForSpawn <= 0)
+            _ticksForSpawn--;
+            if (_ticksForSpawn <= 0)
             {
                 GenerateObstacle();
-                _timeForSpawn = _spawnInterval;
+                _ticksForSpawn = _spawnInterval;
             }
         }
 

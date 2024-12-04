@@ -10,16 +10,16 @@ namespace Assets.Scripts.Obstacles
     {
         [SerializeField] GameObject _flickeringObstaclePrefab;
 
-        private float _flickeringInterval, _timeTillFlicker;
+        private float _flickeringInterval, _ticksTillFlicker;
 
         private List<FlickeringObstacle> _obstacles = new();
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (IsActive)
                 Tick();
-
         }
+
         public override void Activate()
         {
             IsActive = true;
@@ -41,20 +41,20 @@ namespace Assets.Scripts.Obstacles
                 var obstacle = Instantiate(data.ObstaclePrefab, spawnPos, Quaternion.identity).GetComponent<FlickeringObstacle>();
                 _obstacles.Add(obstacle);
             }
-            _flickeringInterval = data.FlickeringInterval;
-            _timeTillFlicker = _flickeringInterval;
+            _flickeringInterval =  TimeHelper.SecondsToTicks(data.FlickeringInterval);
+            _ticksTillFlicker = _flickeringInterval;
         }
 
         protected override void Tick()
         {
-            _timeTillFlicker -= Time.deltaTime;
-            if (_timeTillFlicker <= 0)
+            _ticksTillFlicker--;
+            if (_ticksTillFlicker <= 0)
             {
                 foreach (var obstacle in _obstacles)
                 {
                     obstacle.Flicker();
                 }
-                _timeTillFlicker = _flickeringInterval;
+                _ticksTillFlicker = _flickeringInterval;
             }
         }
 

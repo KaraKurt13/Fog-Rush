@@ -13,6 +13,6 @@ namespace Assets.Scripts.Main.LevelData
 
         public float MoveSpeed;
 
-        public float SpawnInterval;
+        public int SpawnInterval;
     }
 }

@@ -8845,6 +8845,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8997254845993021720, guid: 5827fd918351d364bbd6dea0bc8af26c,
         type: 3}
+      propertyPath: FlickeringInterval
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8997254845993021720, guid: 5827fd918351d364bbd6dea0bc8af26c,
+        type: 3}
       propertyPath: RowNums.Array.size
       value: 3
       objectReference: {fileID: 0}
