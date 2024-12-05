@@ -30,6 +30,11 @@ namespace Assets.Scripts.Obstacles
             IsActive = false;
         }
 
+        public override void Reset()
+        {
+
+        }
+
         public override void Init(ObstacleData baseData)
         {
             var data = baseData as FlickeringObstacleData;
@@ -56,11 +61,6 @@ namespace Assets.Scripts.Obstacles
                 }
                 _ticksTillFlicker = _flickeringInterval;
             }
-        }
-
-        private void ToggleObstaclesState()
-        {
-
         }
     }
 }

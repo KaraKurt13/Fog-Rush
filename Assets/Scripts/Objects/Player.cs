@@ -31,6 +31,11 @@ public class Player : MonoBehaviour
         StatsTracker.StartTracking();
     }
 
+    public void Reset()
+    {
+        
+    }
+
     public void DisableMovement()
     {
         MovementEnabled = false;

@@ -15,6 +15,8 @@ namespace Assets.Scripts.Obstacles
 
         public abstract void Init(ObstacleData baseData);
 
+        public abstract void Reset();
+
         protected abstract void Tick();
     }
 }

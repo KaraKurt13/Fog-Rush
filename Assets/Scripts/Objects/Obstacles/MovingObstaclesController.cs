@@ -58,6 +58,11 @@ namespace Assets.Scripts.Obstacles
             // Delete all obstacles
         }
 
+        public override void Reset()
+        {
+
+        }
+
         protected override void Tick()
         {
             _ticksForSpawn--;

@@ -40,6 +40,14 @@ public class Engine : MonoBehaviour
         }
     }
 
+    public void RestartLevel()
+    {
+        foreach (var obstacle in ObstacleControllers)
+            obstacle.Reset();
+        FogWall.Reset();
+        Player.Reset();
+    }
+
     public void EndGame(Player player, GameEndStatus status)
     {
         var stats = player.StatsTracker.GetStats();

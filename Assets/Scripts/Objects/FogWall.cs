@@ -35,6 +35,11 @@ public class FogWall : MonoBehaviour
         _isActive = false;
     }
 
+    public void Reset()
+    {
+        
+    }
+
     private void FixedUpdate()
     {
         if (_isActive)

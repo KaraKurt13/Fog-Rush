@@ -13,6 +13,8 @@ namespace Assets.Scripts.Main
 
         public static Dictionary<int, LevelPrefab> LevelPrefabs;
 
+        private static int _currentLevelNumber;
+
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
@@ -21,13 +23,21 @@ namespace Assets.Scripts.Main
 
         public static void LoadLevel(int level)
         {
+            Debug.Log(level);
             if (!LevelPrefabs.TryGetValue(level, out var prefab))
             {
                 Debug.LogError($"Level {level} can't be loaded!");
             }
 
+            _currentLevelNumber = level;
             SelectedLevel = prefab;
             SceneManager.LoadScene(1);
+        }
+
+        public static void LoadNextLevel()
+        {
+            var levelNum = _currentLevelNumber + 1;
+            LoadLevel(levelNum);
         }
 
         private void LoadLevelsData()

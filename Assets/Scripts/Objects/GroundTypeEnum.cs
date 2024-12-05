@@ -9,5 +9,6 @@ public enum GroundTypeEnum
     Sand,
     Ice,
     River,
-    Bridge
+    Bridge,
+    Finish
 }

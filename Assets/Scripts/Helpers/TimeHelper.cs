@@ -6,8 +6,8 @@ public static class TimeHelper
 {
     public const int TicksPerSecond = 50;
 
-    public static int SecondsToTicks(int seconds)
+    public static int SecondsToTicks(float seconds)
     {
-        return seconds * TicksPerSecond;
+        return Mathf.CeilToInt(seconds * TicksPerSecond);
     }
 }
