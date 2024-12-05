@@ -16,6 +16,8 @@ namespace Assets.Scripts.Main.LevelData
 
         public bool FogIsEnabled = true;
 
+        public int Number;
+
         public LevelTerrainData ConvertPrefabToData()
         {
             var bounds = Ground.cellBounds;

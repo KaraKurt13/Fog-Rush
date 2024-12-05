@@ -98,6 +98,7 @@ MonoBehaviour:
   - {fileID: 590988818885622407}
   - {fileID: 1657847487713901218}
   FogIsEnabled: 1
+  Number: 1
 --- !u!1 &4328977365491783742
 GameObject:
   m_ObjectHideFlags: 0
