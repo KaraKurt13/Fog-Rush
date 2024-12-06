@@ -29,7 +29,7 @@ public class FogWall : MonoBehaviour
         _currentX = _fogTilemap.WorldToCell(transform.position).x;
         _isActive = true;
 
-        var yScale = Find.TerrainData.Height / 3;
+        var yScale = Find.TerrainData.Height / 3f;
         var line = Find.TerrainData.GetTileLine(0);
         var center = (line.First().Center + line.Last().Center) / 2;
         transform.localScale = new Vector3(1, yScale, 1);
