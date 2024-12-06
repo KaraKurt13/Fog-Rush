@@ -10,7 +10,7 @@ namespace Assets.Scripts.Main.LevelData
 {
     public class LevelPrefab : MonoBehaviour
     {
-        public Tilemap Ground, Gap;
+        public Tilemap Ground, Gap, Collectibles, Misc;
 
         public List<ObstacleData> ObstaclesData = new();
 
