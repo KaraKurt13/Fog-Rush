@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "381107525502",
+    "firebase_url": "https://mobilerunner-a32ee-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "mobilerunner-a32ee",
     "storage_bucket": "mobilerunner-a32ee.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:381107525502:android:30b0ebb01022e7e184c52f",
+        "mobilesdk_app_id": "1:381107525502:android:92dc44fb994b574f84c52f",
         "android_client_info": {
-          "package_name": "com.DefaultCompany.MobileRunner"
+          "package_name": "com.CoffeeCupGames.FogRush"
         }
       },
       "oauth_client": [],
