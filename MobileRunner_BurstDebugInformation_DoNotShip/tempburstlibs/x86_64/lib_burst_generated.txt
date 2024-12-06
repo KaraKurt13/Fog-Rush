@@ -19,6 +19,7 @@ Library: C:\Users\user\Documents\GitHub\MobileRunner\Temp\BurstOutput\tempburstl
 --assembly-defines=System.Xml;
 --assembly-defines=Unity.2D.Animation.Runtime;
 --assembly-defines=Unity.2D.PixelPerfect;
+--assembly-defines=Unity.2D.Tilemap.Extras;
 --assembly-defines=Unity.AdaptivePerformance;
 --assembly-defines=Unity.AdaptivePerformance.Google.Android;
 --assembly-defines=Unity.AdaptivePerformance.Samsung.Android;

@@ -1338,7 +1338,7 @@ PrefabInstance:
     - target: {fileID: 8997254845993021720, guid: 5827fd918351d364bbd6dea0bc8af26c,
         type: 3}
       propertyPath: LineNumber
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8997254845993021720, guid: 5827fd918351d364bbd6dea0bc8af26c,
         type: 3}

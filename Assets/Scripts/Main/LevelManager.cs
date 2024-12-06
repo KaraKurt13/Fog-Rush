@@ -23,7 +23,6 @@ namespace Assets.Scripts.Main
 
         public static void LoadLevel(int level)
         {
-            Debug.Log(level);
             if (!LevelPrefabs.TryGetValue(level, out var prefab))
             {
                 Debug.LogError($"Level {level} can't be loaded!");

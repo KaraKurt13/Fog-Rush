@@ -12,6 +12,10 @@ namespace Assets.Scripts.Main.LevelData
 
         public List<ObstacleData> ObstacleControllers;
 
+        public bool FogIsEnabled;
+
+        public float FogSpeed;
+
         public LevelTerrainData(int width, int height)
         {
             Width = width;

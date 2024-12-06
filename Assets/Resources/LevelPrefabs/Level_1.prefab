@@ -95,7 +95,8 @@ MonoBehaviour:
   Ground: {fileID: 5596611694723445689}
   Gap: {fileID: 6311625150467968646}
   ObstaclesData: []
-  FogIsEnabled: 1
+  FogIsEnabled: 0
+  FogSpeed: 1
   Number: 1
 --- !u!1 &4328977365491783742
 GameObject:

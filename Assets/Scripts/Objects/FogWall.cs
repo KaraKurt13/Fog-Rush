@@ -25,9 +25,15 @@ public class FogWall : MonoBehaviour
     public void Activate(float movementSpeed)
     {
         _movementSpeed = movementSpeed;
-        _movementPerTick = movementSpeed / 50;
+        _movementPerTick = movementSpeed / TimeHelper.TicksPerSecond;
         _currentX = _fogTilemap.WorldToCell(transform.position).x;
         _isActive = true;
+
+        var yScale = Find.TerrainData.Height / 3;
+        var line = Find.TerrainData.GetTileLine(0);
+        var center = (line.First().Center + line.Last().Center) / 2;
+        transform.localScale = new Vector3(1, yScale, 1);
+        transform.position = new Vector3(-3, center.y, 0);
     }
 
     public void Deactivate()

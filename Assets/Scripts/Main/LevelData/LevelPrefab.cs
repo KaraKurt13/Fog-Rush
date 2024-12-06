@@ -16,6 +16,8 @@ namespace Assets.Scripts.Main.LevelData
 
         public bool FogIsEnabled = true;
 
+        public float FogSpeed = 1;
+
         public int Number;
 
         public LevelTerrainData ConvertPrefabToData()
@@ -52,6 +54,8 @@ namespace Assets.Scripts.Main.LevelData
                 }
             }
             data.ObstacleControllers = ObstaclesData;
+            data.FogIsEnabled = FogIsEnabled;
+            data.FogSpeed = FogSpeed;
 
             return data;
         }

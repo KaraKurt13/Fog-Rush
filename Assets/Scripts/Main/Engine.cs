@@ -23,21 +23,22 @@ public class Engine : MonoBehaviour
 
     public List<ObstaclesControllerBase> ObstacleControllers = new();
 
-    //TEMP
-    public GameObject Prefab;
-
     private void Awake()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         Find.Engine = this;
+
         var levelData = LevelManager.SelectedLevel.ConvertPrefabToData();
         Terrain = LevelGenerator.GenerateLevel(levelData);
         LevelGenerator.SetupPlayers();
-        //FogWall.Activate(1.2f);
+
         foreach (var obstacle in ObstacleControllers)
         {
             obstacle.Activate();
         }
+
+        if (levelData.FogIsEnabled)
+            FogWall.Activate(levelData.FogSpeed);
     }
 
     public void RestartLevel()
