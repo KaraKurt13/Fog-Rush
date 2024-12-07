@@ -1,3 +1,4 @@
+using Assets.Scripts.Collectibles;
 using Assets.Scripts.Terrain;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,5 +11,7 @@ namespace Assets.Scripts.Main.LevelData
         public GroundTypeEnum GroundType;
 
         public TerrainLayerEnum TerrainLayer;
+
+        public CollectibleTypeEnum Collectible;
     }
 }

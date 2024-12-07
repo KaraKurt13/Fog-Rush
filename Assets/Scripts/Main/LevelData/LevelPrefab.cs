@@ -1,3 +1,4 @@
+using Assets.Scripts.Collectibles;
 using Assets.Scripts.Main.LevelData;
 using Assets.Scripts.Terrain;
 using System;
@@ -29,6 +30,7 @@ namespace Assets.Scripts.Main.LevelData
             var data = new LevelTerrainData(width, height);
             var groundTiles = Ground.GetTilesBlock(bounds);
             var gapTiles = Gap.GetTilesBlock(bounds);
+            var collectibleTiles = Collectibles.GetTilesBlock(bounds);
 
             for (int i = 0; i < width; i++)
             {
@@ -47,6 +49,13 @@ namespace Assets.Scripts.Main.LevelData
                     {
                         tileData.TerrainLayer = TerrainLayerEnum.Ground;
                     }
+
+                    var collectible = collectibleTiles[index];
+                    if (collectible != null)
+                    {
+                        var collectibleType = (CollectibleTypeEnum)Enum.Parse(typeof(CollectibleTypeEnum), collectible.name);
+                        tileData.Collectible = collectibleType;
+                    }    
 
                     var type = (GroundTypeEnum)Enum.Parse(typeof(GroundTypeEnum), tile.name);
                     tileData.GroundType = type;

@@ -7,4 +7,6 @@ public static class Find
     public static Engine Engine;
 
     public static TerrainData TerrainData;
+
+    public static DataLibrary DataLibrary;
 }

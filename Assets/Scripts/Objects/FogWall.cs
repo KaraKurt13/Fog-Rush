@@ -16,6 +16,8 @@ public class FogWall : MonoBehaviour
 
     private const float _xOffset = 0.5f;
 
+    private bool TemporaryDeactivated = true;
+
     [SerializeField] Tilemap _fogTilemap;
     [SerializeField] TileBase _fogTilebase;
 
@@ -41,6 +43,12 @@ public class FogWall : MonoBehaviour
         _isActive = false;
     }
 
+    public void TemporaryDeactivate(float time)
+    {
+        var ticks = TimeHelper.SecondsToTicks(time);
+        TemporaryDeactivated = true;
+    }
+
     public void Reset()
     {
         
@@ -48,14 +56,31 @@ public class FogWall : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_isActive)
+        if (_isActive && !TemporaryDeactivated)
             Move();
+        if (TemporaryDeactivated)
+            DeactivationTick();
+
     }
 
     private void Move()
     {
         transform.position += new Vector3(_movementPerTick, 0, 0);
         LineCrossCheck();
+    }
+
+    private int TicksTillActivation = 0;
+
+    private void DeactivationTick()
+    {
+        TicksTillActivation--;
+        if (TicksTillActivation <= 0)
+            Reactivate();
+    }
+
+    private void Reactivate()
+    {
+        TemporaryDeactivated = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

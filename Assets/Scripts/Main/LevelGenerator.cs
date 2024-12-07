@@ -1,3 +1,4 @@
+using Assets.Scripts.Collectibles;
 using Assets.Scripts.Main.LevelData;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
@@ -19,23 +20,22 @@ public class LevelGenerator : MonoBehaviour
 
     public TilemapTerrain Tilemaps;
 
-    private Dictionary<GroundTypeEnum, TileBase> _tileBases = new();
-
-    private Dictionary<TileModifierTypeEnum, TileModifierBase> _tileModifiers = new();
-
     private int _mapHeight = 10, _mapWidth = 25;
 
     private TerrainData _terrainData;
 
+    private DataLibrary _dataLibrary;
+
     [SerializeField] Transform _obstaclesControllerContainer;
     [SerializeField] GameObject _movingObstaclesController, _flickeringObstaclesController;
+    [SerializeField] GameObject _collectiblePrefab;
 
     private LevelTerrainData _levelData;
 
     public TerrainData GenerateLevel(LevelTerrainData data)
     {
+        _dataLibrary = Find.DataLibrary;
         _levelData = data;
-        InitData();
         GenerateBasicTerrain();
         GenerateObstacles();
         SetupTilemap();
@@ -55,7 +55,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 var tileData = _levelData.TerrainData[i, j];
                 var groundType = tileData.GroundType;
-                var tileBase = _tileBases[groundType];
+                var tileBase = _dataLibrary.TileBases[groundType];
                 var center = Tilemaps.Ground.GetCellCenterWorld(new Vector3Int(i, j));
                 var tile = new Tile(i, j, center);
                 tile.GroundType = groundType;
@@ -74,7 +74,13 @@ public class LevelGenerator : MonoBehaviour
 
                 if (modifier != TileModifierTypeEnum.None)
                 {
-                    tile.Modifier = _tileModifiers[modifier];
+                    tile.Modifier = _dataLibrary.TileModifiers[modifier];
+                }
+
+                if (tileData.Collectible != CollectibleTypeEnum.None)
+                {
+                    var collectible = Instantiate(_collectiblePrefab, tile.Center, Quaternion.identity).GetComponent<CollectibleThing>();
+                    collectible.Type = _dataLibrary.CollectibleTypes[tileData.Collectible];
                 }
                 _terrainData.Tiles[i, j] = tile;
             }
@@ -124,26 +130,5 @@ public class LevelGenerator : MonoBehaviour
         var startTiles = _terrainData.GetTileLine(0).ToList();
         var randomTile = startTiles.Random();  
         Engine.Player.Init(randomTile);
-    }
-
-    private void InitData()
-    {
-        foreach (GroundTypeEnum type in Enum.GetValues(typeof(GroundTypeEnum)))
-        {
-            var tileBase = Resources.Load<TileBase>($"TileBases/{type}");
-
-            if (tileBase == null) continue;
-
-            _tileBases.Add(type, tileBase);
-        }
-
-        foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
-        {
-            if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(typeof(TileModifierBase)))
-            {
-                var instance = (TileModifierBase)Activator.CreateInstance(type);
-                _tileModifiers.Add(instance.Type, instance);
-            }
-        }
     }
 }

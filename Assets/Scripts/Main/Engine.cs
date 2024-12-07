@@ -27,6 +27,7 @@ public class Engine : MonoBehaviour
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         Find.Engine = this;
+        Find.DataLibrary = new DataLibrary();
 
         var levelData = LevelManager.SelectedLevel.ConvertPrefabToData();
         Terrain = LevelGenerator.GenerateLevel(levelData);
