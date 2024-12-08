@@ -8,11 +8,12 @@ namespace Assets.Scripts.Collectibles
     {
         public CollectibleType Type;
 
-        [SerializeField] SpriteRenderer spriteRenderer;
+        [SerializeField] SpriteRenderer _spriteRenderer;
 
         public void Init(CollectibleType type)
         {
             Type = type;
+            _spriteRenderer.sprite = type.Sprite;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -20,6 +21,7 @@ namespace Assets.Scripts.Collectibles
             if (collision.TryGetComponent<Player>(out var player))
             {
                 Type.OnPickUp(player);
+                Destroy(this.gameObject);
             }
         }
     }

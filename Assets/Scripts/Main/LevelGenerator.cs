@@ -80,7 +80,7 @@ public class LevelGenerator : MonoBehaviour
                 if (tileData.Collectible != CollectibleTypeEnum.None)
                 {
                     var collectible = Instantiate(_collectiblePrefab, tile.Center, Quaternion.identity).GetComponent<CollectibleThing>();
-                    collectible.Type = _dataLibrary.CollectibleTypes[tileData.Collectible];
+                    collectible.Init(_dataLibrary.CollectibleTypes[tileData.Collectible]);
                 }
                 _terrainData.Tiles[i, j] = tile;
             }

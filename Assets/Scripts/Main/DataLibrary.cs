@@ -39,7 +39,7 @@ public class DataLibrary
             {
                 var instance = (CollectibleType)Activator.CreateInstance(type);
                 CollectibleTypes.Add(instance.Type, instance);
-                instance.Sprite = Resources.Load<Sprite>($"Sprites/Collecitbles/{type.Name}");
+                instance.Sprite = Resources.Load<Sprite>($"Sprites/Collectibles/{instance.Type}");
             }
         }
     }
