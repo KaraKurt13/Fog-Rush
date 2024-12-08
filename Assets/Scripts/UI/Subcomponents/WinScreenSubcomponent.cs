@@ -15,7 +15,7 @@ namespace Assets.Scripts.UI
 
         public void Draw(PlayerStats stats)
         {
-            _resultText.text = $"{stats.Coins}/3 C, {stats.TimeSpent.ToString("F1")} sec.";
+            _resultText.text = $"{stats.Coins}/3<sprite name=\"Coin\">, {stats.TimeSpent.ToString("F1")} sec.";
             _shareButton.onClick.AddListener(() => FacebookManager.Instance.ShareGameResults(stats));
             _nextLevelButton.onClick.AddListener(() => LevelManager.LoadNextLevel());
             // draw remaining health
