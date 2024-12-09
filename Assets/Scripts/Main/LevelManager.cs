@@ -1,7 +1,5 @@
-using Assets.Scripts.Main.LevelData;
-using System.Collections;
+using Firebase.Auth;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,12 +11,31 @@ namespace Assets.Scripts.Main
 
         public static Dictionary<int, LevelPrefab> LevelPrefabs;
 
+        public static Dictionary<int, LevelData> LevelsData;
+
         private static int _currentLevelNumber;
 
         private void Start()
         {
             DontDestroyOnLoad(gameObject);
+        }
+
+        public static void LoadDataFromDatabase()
+        {
+            Debug.Log("loading data");
             LoadLevelsData();
+            DatabaseManager.LoadLevelData(FirebaseAuth.DefaultInstance.CurrentUser.UserId, result => 
+            {
+                if (result != null)
+                {
+                    Debug.Log("Data loaded. Levels = " + LevelsData.Count);
+                    LevelsData = result;
+                }
+                else
+                {
+                    Debug.LogError("Can't load levels!");
+                }
+            });
         }
 
         public static void LoadLevel(int level)
@@ -39,12 +56,10 @@ namespace Assets.Scripts.Main
             LoadLevel(levelNum);
         }
 
-        private void LoadLevelsData()
+        private static void LoadLevelsData()
         {
             LevelPrefabs = new();
             var levels = Resources.LoadAll<GameObject>("LevelPrefabs/");
-
-            // Later add IsUnlocked set during to loaded data from database
             foreach (var levelObject in levels)
             {
                 if (!levelObject.TryGetComponent<LevelPrefab>(out var levelPrefab))

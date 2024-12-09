@@ -1,4 +1,4 @@
-using Assets.Scripts.Main.LevelData;
+using Assets.Scripts.Main;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
 using System.Collections;

@@ -1,5 +1,5 @@
 using Assets.Scripts.Collectibles;
-using Assets.Scripts.Main.LevelData;
+using Assets.Scripts.Main;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
 using Assets.Scripts.TileModifiers;

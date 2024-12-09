@@ -1,4 +1,4 @@
-using Assets.Scripts.Main.LevelData;
+using Assets.Scripts.Main;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

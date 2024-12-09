@@ -1,4 +1,5 @@
 using Assets.Scripts.Facebook;
+using Assets.Scripts.Main;
 using Assets.Scripts.UI;
 using Facebook.Unity;
 using Firebase.Auth;
@@ -22,26 +23,17 @@ namespace Assets.Scripts.MainMenu
             Screen.orientation = ScreenOrientation.Portrait;
             if (FirebaseAuth.DefaultInstance.CurrentUser != null)
             {
-                Debug.Log("success");
                 OnSuccessfullLogin();
             }
             else
             {
                 MainMenuUI.DisplayLoginOptions();
             }
-            /*if (FB.IsLoggedIn)
-            {
-                FacebookAdsManager.ShowAd();
-
-            }
-            else
-            {
-                FacebookManager.Initialize();
-            }*/
         }
 
         public void OnSuccessfullLogin()
         {
+            LevelManager.LoadDataFromDatabase();
             MainMenuUI.OnSuccessfulLogin();
         }
 

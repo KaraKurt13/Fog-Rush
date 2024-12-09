@@ -1,5 +1,4 @@
 using Assets.Scripts.Collectibles;
-using Assets.Scripts.Main.LevelData;
 using Assets.Scripts.Terrain;
 using System;
 using System.Collections;
@@ -7,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Assets.Scripts.Main.LevelData
+namespace Assets.Scripts.Main
 {
     public class LevelPrefab : MonoBehaviour
     {

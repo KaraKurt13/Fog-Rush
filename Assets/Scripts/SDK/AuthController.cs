@@ -2,6 +2,7 @@ using Assets.Scripts.Facebook;
 using Assets.Scripts.MainMenu;
 using Facebook.Unity;
 using Firebase.Auth;
+using Firebase.Database;
 using System;
 using System.Collections;
 using System.Collections.Generic;
