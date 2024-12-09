@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,9 +14,10 @@ public class PlayerPanelSubcomponent : MonoBehaviour
 
     public void DrawAuthorizedPanel()
     {
-        _playerIcon.sprite = PlayerData.Icon;
-        _playerName.text = PlayerData.Name;
-        _playerID.text = PlayerData.ID;
+        //_playerIcon.sprite = PlayerData.Icon;
+        _playerName.text = FirebaseAuth.DefaultInstance.CurrentUser.DisplayName;
+        _playerID.text = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+        //_playerIcon.sprite = 
         _authorizedPanel.SetActive(true);
         _unauthorizedPanel.SetActive(false);
     }

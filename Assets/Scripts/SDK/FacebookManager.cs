@@ -25,41 +25,34 @@ namespace Assets.Scripts.Facebook
             "user_friends"
         };
 
-        public void Initialize()
+        public Task<AccessToken> AuthorizeUser()
         {
-            if (!FB.IsInitialized)
-            {
-                TryInitialize();
-            }
-            else
-            {
-                AuthorizeUser();
-            }
-        }
-
-        public void TryInitialize()
-        {
-            FB.Init(AuthorizeUser);
-        }
-
-        public void AuthorizeUser()
-        {
+            var tcs = new TaskCompletionSource<AccessToken>();
             if (FB.IsInitialized)
             {
-                Instance = this;
-                FB.ActivateApp();
-                FB.LogInWithReadPermissions(_permissions, AuthCallback);
+                FB.LogInWithReadPermissions(_permissions, result =>
+                {
+                    if (result.Error == null)
+                    {
+                        tcs.SetResult(result.AccessToken);
+                    }
+                    else
+                    {
+                        tcs.SetException(new Exception(result.Error));
+                    }
+                });
             }
             else
             {
                 ErrorHandler.Instance.DrawError("Facebook error", "Can't initialize Facebook!");
+                tcs.SetException(new Exception("Facebook is not initialized"));
             }
+            return tcs.Task;
         }
 
         public void Logout()
         {
             FB.LogOut();
-            MenuEngine.OnLogout();
         }
 
         private async void AuthCallback(ILoginResult results)

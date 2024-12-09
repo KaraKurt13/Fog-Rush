@@ -14,7 +14,7 @@ namespace Assets.Scripts.UI
 
         [SerializeField] GameObject _gameModeSelectorPanel;
 
-        [SerializeField] GameObject _mainPanel;
+        [SerializeField] GameObject _mainPanel, _loginOptions;
 
         public void OnSuccessfulLogin()
         {
@@ -40,6 +40,16 @@ namespace Assets.Scripts.UI
         {
             _gameModeSelectorPanel.SetActive(false);
             _mainPanel.SetActive(true);
+        }
+
+        public void DisplayLoginOptions()
+        {
+            _loginOptions.SetActive(true);
+        }
+
+        public void HideLoginOptions()
+        {
+            _loginOptions.SetActive(false);
         }
     }
 }
