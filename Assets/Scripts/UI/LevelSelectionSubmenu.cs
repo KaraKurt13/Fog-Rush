@@ -27,7 +27,6 @@ namespace Assets.Scripts.UI
                 levelObject.Button.onClick.AddListener(() => LevelManager.LoadLevel(level.Number));
                 var isUnlocked = levelsData[level.Number].IsUnlocked; 
                 levelObject.SetLock(!isUnlocked);
-                Debug.Log($"Level is {isUnlocked}");
             }
             this.gameObject.SetActive(true);
         }

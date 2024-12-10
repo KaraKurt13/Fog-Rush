@@ -1,6 +1,7 @@
 using Assets.Scripts.Facebook;
 using Assets.Scripts.MainMenu;
 using Facebook.Unity;
+using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using System;
@@ -19,6 +20,9 @@ public class AuthController : MonoBehaviour
     private void Awake()
     {
         _auth = FirebaseAuth.DefaultInstance;
+        FirebaseApp.FixDependenciesAsync();
+        FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(false);
+
         if (!FB.IsInitialized)
         {
             FB.Init(() =>

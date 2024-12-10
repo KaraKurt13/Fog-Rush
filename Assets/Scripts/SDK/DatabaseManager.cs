@@ -1,9 +1,11 @@
 using Firebase.Database;
+using Firebase.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public static class DatabaseManager
 {
@@ -12,25 +14,32 @@ public static class DatabaseManager
         var _database = FirebaseDatabase.DefaultInstance.RootReference;
         _database.Child("users").Child(userId).Child("levels")
             .GetValueAsync()
-            .ContinueWith(task =>
+            .ContinueWithOnMainThread(task =>
             {
-                if (task.IsCompleted)
+                if (task.IsCompleted && !task.IsFaulted && !task.IsCanceled)
                 {
                     DataSnapshot snapshot = task.Result;
+
                     if (snapshot.Exists)
                     {
-                        var levelDict = snapshot.Value as Dictionary<string,object>;
-                        var levels = levelDict.ToDictionary(
-                            kvp => int.Parse(kvp.Key),
-                            kvp => JsonUtility.FromJson<LevelData>(kvp.Value.ToString())
-                            );
-                        onLoaded(levels);
+                        var levels = new Dictionary<int, LevelData>();
+                        foreach (var child in snapshot.Children)
+                        {
+                            if (int.TryParse(child.Key, out int levelId))
+                            {
+                                var json = child.GetRawJsonValue();
+                                LevelData levelData = JsonConvert.DeserializeObject<LevelData>(json);
+                                levels.Add(levelId, levelData);
+                            }
+                        }
+                        onLoaded?.Invoke(levels);
                     }
                     else
                     {
                         Debug.Log("No data found for user. Initializing...");
                         InitUserData(userId, () =>
                         {
+                            Debug.Log("data loaded!!!! + " + onLoaded);
                             LoadLevelData(userId, onLoaded);
                         });
                     }
@@ -51,7 +60,7 @@ public static class DatabaseManager
     public static void InitUserData(string userId, Action onInitialize = null)
     {
         DatabaseReference configRef = FirebaseDatabase.DefaultInstance.RootReference.Child("config");
-        configRef.GetValueAsync().ContinueWith(configTask =>
+        configRef.GetValueAsync().ContinueWithOnMainThread(configTask =>
         {
             if (configTask.IsCompleted)
             {
@@ -60,26 +69,27 @@ public static class DatabaseManager
                 DatabaseReference userRef = FirebaseDatabase.DefaultInstance
                    .RootReference.Child("users").Child(userId);
 
-                userRef.GetValueAsync().ContinueWith(userTask => 
+                userRef.GetValueAsync().ContinueWithOnMainThread(userTask => 
                 {
                     DataSnapshot userSnapshot = userTask.Result;
                     if (!userSnapshot.Exists)
                     {
                         var levels = new Dictionary<int, LevelData>();
-                        for (int i = 0; i < totalLevels; i++)
+                        for (int i = 1; i <= totalLevels; i++)
                         {
                             var levelData = new LevelData(0, 0, false);
                             levels.Add(i, levelData);
                         }
 
-                        levels[0].IsUnlocked = true;
+                        levels[1].IsUnlocked = true;
 
-                        var initialData = new
-                        {
-                            levelsData = levels
-                        };
-                        Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                        userRef.SetValueAsync(initialData).ContinueWith(initTask =>
+                        var levelsData = levels.ToDictionary(
+                            kvp => kvp.Key.ToString(),
+                            kvp => kvp.Value
+                        );
+                        var json = JsonConvert.SerializeObject(levelsData);
+
+                        userRef.Child("levels").SetRawJsonValueAsync(json).ContinueWithOnMainThread(initTask =>
                         {
                             Debug.Log("task compl");
                             if (initTask.IsCompleted)

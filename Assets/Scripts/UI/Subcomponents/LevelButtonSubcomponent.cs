@@ -17,6 +17,7 @@ namespace Assets.Scripts.UI
         public void SetLock(bool isLocked)
         {
             _lockImage.gameObject.SetActive(isLocked);
+            Button.interactable = !isLocked;
         }
     }
 }

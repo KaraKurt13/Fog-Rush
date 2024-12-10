@@ -22,19 +22,10 @@ namespace Assets.Scripts.Main
 
         public static void LoadDataFromDatabase()
         {
-            Debug.Log("loading data");
             LoadLevelsData();
             DatabaseManager.LoadLevelData(FirebaseAuth.DefaultInstance.CurrentUser.UserId, result => 
             {
-                if (result != null)
-                {
-                    Debug.Log("Data loaded. Levels = " + LevelsData.Count);
-                    LevelsData = result;
-                }
-                else
-                {
-                    Debug.LogError("Can't load levels!");
-                }
+                LevelsData = result;
             });
         }
 
