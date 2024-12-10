@@ -39,7 +39,6 @@ public static class DatabaseManager
                         Debug.Log("No data found for user. Initializing...");
                         InitUserData(userId, () =>
                         {
-                            Debug.Log("data loaded!!!! + " + onLoaded);
                             LoadLevelData(userId, onLoaded);
                         });
                     }
