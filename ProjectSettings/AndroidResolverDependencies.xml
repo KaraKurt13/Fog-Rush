@@ -18,6 +18,8 @@
     <package>com.google.firebase:firebase-auth:23.1.0</package>
     <package>com.google.firebase:firebase-auth-unity:12.4.1</package>
     <package>com.google.firebase:firebase-common:21.0.0</package>
+    <package>com.google.firebase:firebase-database:21.0.0</package>
+    <package>com.google.firebase:firebase-database-unity:12.4.1</package>
     <package>com.parse.bolts:bolts-android:1.4.0</package>
   </packages>
   <files>
@@ -27,10 +29,12 @@
     <file>Assets/GeneratedLocalRepo/Firebase/m2repository/com/google/firebase/firebase-app-unity/12.4.1/firebase-app-unity-12.4.1.pom</file>
     <file>Assets/GeneratedLocalRepo/Firebase/m2repository/com/google/firebase/firebase-auth-unity/12.4.1/firebase-auth-unity-12.4.1.aar</file>
     <file>Assets/GeneratedLocalRepo/Firebase/m2repository/com/google/firebase/firebase-auth-unity/12.4.1/firebase-auth-unity-12.4.1.pom</file>
+    <file>Assets/GeneratedLocalRepo/Firebase/m2repository/com/google/firebase/firebase-database-unity/12.4.1/firebase-database-unity-12.4.1.aar</file>
+    <file>Assets/GeneratedLocalRepo/Firebase/m2repository/com/google/firebase/firebase-database-unity/12.4.1/firebase-database-unity-12.4.1.pom</file>
   </files>
   <settings>
     <setting name="androidAbis" value="arm64-v8a,armeabi-v7a,x86,x86_64" />
-    <setting name="bundleId" value="com.DefaultCompany.MobileRunner" />
+    <setting name="bundleId" value="com.CoffeeCupGames.FogRush" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />
     <setting name="gradlePropertiesTemplateEnabled" value="True" />
