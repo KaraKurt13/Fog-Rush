@@ -1,5 +1,6 @@
 using Assets.Scripts.Collectibles;
 using Assets.Scripts.Main;
+using Assets.Scripts.Objects;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
 using Assets.Scripts.TileModifiers;
@@ -58,7 +59,8 @@ public class LevelGenerator : MonoBehaviour
                 var tileData = _levelData.TerrainData[i, j];
                 var groundType = tileData.GroundType;
                 var tileBase = _dataLibrary.TileBases[groundType];
-                var center = Tilemaps.Ground.GetCellCenterWorld(new Vector3Int(i, j));
+                var vector = new Vector3Int(i, j);
+                var center = Tilemaps.Ground.GetCellCenterWorld(vector);
                 var tile = new Tile(i, j, center);
                 tile.GroundType = groundType;
                 tile.Layer = tileData.TerrainLayer;
@@ -67,10 +69,10 @@ public class LevelGenerator : MonoBehaviour
                 switch (tileData.TerrainLayer)
                 {
                     case TerrainLayerEnum.Ground:
-                        Tilemaps.Ground.SetTile(new Vector3Int(i, j), tileBase);
+                        Tilemaps.Ground.SetTile(vector, tileBase);
                         break;
                     case TerrainLayerEnum.Gap:
-                        Tilemaps.Gap.SetTile(new Vector3Int(i, j), tileBase);
+                        Tilemaps.Gap.SetTile(vector, tileBase);
                         break;
                 }
 
@@ -82,7 +84,14 @@ public class LevelGenerator : MonoBehaviour
                 if (tileData.Collectible != CollectibleTypeEnum.None)
                 {
                     var collectible = Instantiate(_collectiblePrefab, tile.Center, Quaternion.identity).GetComponent<CollectibleThing>();
-                    collectible.Init(_dataLibrary.CollectibleTypes[tileData.Collectible]);
+                    var type = _dataLibrary.CollectibleTypes[tileData.Collectible];
+                    collectible.Init(type);
+                }
+
+                if (tileData.MiscType != MiscTypeEnum.None)
+                {
+                    var misc = Find.DataLibrary.MiscTileBases[tileData.MiscType];
+                    Tilemaps.Misc.SetTile(vector, misc);
                 }
                 _terrainData.Tiles[i, j] = tile;
             }

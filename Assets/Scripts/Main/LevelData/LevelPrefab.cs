@@ -1,4 +1,5 @@
 using Assets.Scripts.Collectibles;
+using Assets.Scripts.Objects;
 using Assets.Scripts.Terrain;
 using System;
 using System.Collections;
@@ -30,6 +31,7 @@ namespace Assets.Scripts.Main
             var groundTiles = Ground.GetTilesBlock(bounds);
             var gapTiles = Gap.GetTilesBlock(bounds);
             var collectibleTiles = Collectibles.GetTilesBlock(bounds);
+            var miscTIles = Misc.GetTilesBlock(bounds);
 
             for (int i = 0; i < width; i++)
             {
@@ -54,7 +56,14 @@ namespace Assets.Scripts.Main
                     {
                         var collectibleType = (CollectibleTypeEnum)Enum.Parse(typeof(CollectibleTypeEnum), collectible.name);
                         tileData.Collectible = collectibleType;
-                    }    
+                    }
+
+                    var misc = miscTIles[index];
+                    if (misc != null)
+                    {
+                        var miscType = (MiscTypeEnum)Enum.Parse(typeof(MiscTypeEnum), misc.name);
+                        tileData.MiscType = miscType;
+                    }
 
                     var type = (GroundTypeEnum)Enum.Parse(typeof(GroundTypeEnum), tile.name);
                     tileData.GroundType = type;

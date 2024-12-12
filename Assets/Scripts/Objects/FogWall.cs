@@ -36,6 +36,7 @@ public class FogWall : MonoBehaviour
         var center = (line.First().Center + line.Last().Center) / 2;
         transform.localScale = new Vector3(1, yScale, 1);
         transform.position = new Vector3(-3, center.y, 0);
+        gameObject.SetActive(true);
     }
 
     public void Deactivate()

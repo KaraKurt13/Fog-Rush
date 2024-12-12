@@ -9,7 +9,7 @@ namespace Assets.Scripts.Main
     {
         public override ObstacleTypeEnum Type => ObstacleTypeEnum.Flickering;
 
-        public int FlickeringInterval;
+        public float FlickeringInterval;
 
         public List<int> RowNums;
     }

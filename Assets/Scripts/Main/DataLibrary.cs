@@ -1,4 +1,5 @@
 using Assets.Scripts.Collectibles;
+using Assets.Scripts.Objects;
 using Assets.Scripts.TileModifiers;
 using System;
 using System.Collections;
@@ -15,6 +16,8 @@ public class DataLibrary
 
     public Dictionary<CollectibleTypeEnum, CollectibleType> CollectibleTypes = new();
 
+    public Dictionary<MiscTypeEnum, TileBase> MiscTileBases = new();
+
     private void InitData()
     {
         foreach (GroundTypeEnum type in Enum.GetValues(typeof(GroundTypeEnum)))
@@ -24,6 +27,15 @@ public class DataLibrary
             if (tileBase == null) continue;
 
             TileBases.Add(type, tileBase);
+        }
+
+        foreach (MiscTypeEnum type in Enum.GetValues(typeof(MiscTypeEnum)))
+        {
+            var tileBase = Resources.Load<TileBase>($"TileBases/Misc/{type}");
+
+            if (tileBase == null) continue;
+
+            MiscTileBases.Add(type, tileBase);
         }
 
         var types = Assembly.GetExecutingAssembly().GetTypes();
