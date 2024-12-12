@@ -4,6 +4,7 @@ using Facebook.Unity;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
+using Firebase.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,9 +20,20 @@ public class AuthController : MonoBehaviour
 
     private void Awake()
     {
-        _auth = FirebaseAuth.DefaultInstance;
-        FirebaseApp.FixDependenciesAsync();
-        FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(false);
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.Result == DependencyStatus.Available)
+            {
+                Debug.Log("available");
+                _auth = FirebaseAuth.DefaultInstance;
+                FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(false);
+                Engine.OnInit();
+            }
+            else
+            {
+                Debug.LogError("error");
+            }
+        });
 
         if (!FB.IsInitialized)
         {

@@ -21,6 +21,10 @@ namespace Assets.Scripts.MainMenu
         private void Start()
         {
             Screen.orientation = ScreenOrientation.Portrait;
+        }
+
+        public void OnInit()
+        {
             if (FirebaseAuth.DefaultInstance.CurrentUser != null)
             {
                 OnSuccessfullLogin();
