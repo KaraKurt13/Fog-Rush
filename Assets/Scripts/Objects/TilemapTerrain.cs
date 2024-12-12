@@ -5,5 +5,5 @@ using UnityEngine.Tilemaps;
 
 public class TilemapTerrain : MonoBehaviour
 {
-    public Tilemap Ground, Gap, Fog;
+    public Tilemap Ground, Gap, Fog, BackgroundFog;
 }

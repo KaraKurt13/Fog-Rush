@@ -12,6 +12,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.WSA;
 using Tile = Assets.Scripts.Terrain.Tile;
 
 public class LevelGenerator : MonoBehaviour
@@ -29,6 +30,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] Transform _obstaclesControllerContainer;
     [SerializeField] GameObject _movingObstaclesController, _flickeringObstaclesController;
     [SerializeField] GameObject _collectiblePrefab;
+    [SerializeField] TileBase _fogTile;
 
     private LevelTerrainData _levelData;
 
@@ -86,11 +88,33 @@ public class LevelGenerator : MonoBehaviour
             }
             Find.TerrainData = _terrainData;
         }
-
+        InitBackgroundFog();
         foreach (var tile in _terrainData.Tiles)
         {
             tile.InitNeighbours(_terrainData);
         }
+    }
+
+    private void InitBackgroundFog()
+    {
+        var padding = 6;
+        var width = _terrainData.Width;
+        var height = _terrainData.Height;
+        var totalWidth = width + padding * 2;
+        var totalHeight = height + padding * 2;
+        Vector3Int[] positions = new Vector3Int[totalWidth * totalHeight];
+        TileBase[] tiles = new TileBase[totalWidth * totalHeight];
+        int index = 0;
+        for (int x = -padding; x < width + padding; x++)
+        {
+            for (int y = -padding; y < height + padding; y++)
+            {
+                positions[index] = new Vector3Int(x, y, 0);
+                tiles[index] = _fogTile; // Назначаем тайл для каждой позиции
+                index++;
+            }
+        }
+        Tilemaps.BackgroundFog.SetTiles(positions, tiles);
     }
 
     private void GenerateObstacles()
