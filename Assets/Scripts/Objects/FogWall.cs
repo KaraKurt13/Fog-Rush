@@ -16,6 +16,8 @@ public class FogWall : MonoBehaviour
 
     private const float _xOffset = 0.5f;
 
+    private Vector3 _startPosition;
+
     private bool TemporaryDeactivated = true;
 
     [SerializeField] Tilemap _fogTilemap;
@@ -34,8 +36,10 @@ public class FogWall : MonoBehaviour
         var yScale = Find.TerrainData.Height / 3f;
         var line = Find.TerrainData.GetTileLine(0);
         var center = (line.First().Center + line.Last().Center) / 2;
+
+        _startPosition = new Vector3(-3, center.y, 0);
+        transform.position = _startPosition;
         transform.localScale = new Vector3(1, yScale, 1);
-        transform.position = new Vector3(-3, center.y, 0);
         gameObject.SetActive(true);
     }
 
@@ -52,7 +56,10 @@ public class FogWall : MonoBehaviour
 
     public void Reset()
     {
-        
+        transform.position = _startPosition;
+        _isActive = true;
+        TemporaryDeactivated = false;
+        _fogTilemap.ClearAllTiles();
     }
 
     private void FixedUpdate()

@@ -21,5 +21,13 @@ namespace Assets.Scripts.UI
             // draw remaining health
             gameObject.SetActive(true);
         }
+
+        public void Hide()
+        {
+            _resultText.text = string.Empty;
+            _shareButton.onClick.RemoveAllListeners();
+            _nextLevelButton.onClick.RemoveAllListeners();
+            gameObject.SetActive(false);
+        }
     }
 }

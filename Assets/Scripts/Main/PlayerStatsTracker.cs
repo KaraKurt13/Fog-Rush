@@ -23,6 +23,14 @@ public class PlayerStatsTracker : MonoBehaviour
         _maxHealth = health;
     }
 
+    public void Reset()
+    {
+        _timeSpent = 0f;
+        _isTracking = true;
+        Health = _maxHealth;
+        Coins = 0;
+    }
+
     public void StartTracking()
     {
         _isTracking = true;

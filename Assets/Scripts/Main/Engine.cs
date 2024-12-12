@@ -1,3 +1,4 @@
+using Assets.Scripts.Collectibles;
 using Assets.Scripts.Main;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.UI;
@@ -21,6 +22,8 @@ public class Engine : MonoBehaviour
     public FogWall FogWall;
 
     public List<ObstaclesControllerBase> ObstacleControllers = new();
+
+    public List<CollectibleThing> Collectibles = new();
 
     //Temp
     public GameObject LevelPrefab;
@@ -48,8 +51,13 @@ public class Engine : MonoBehaviour
     {
         foreach (var obstacle in ObstacleControllers)
             obstacle.Reset();
+
+        foreach (var collectible in Collectibles)
+            collectible.Reset();
+
         FogWall.Reset();
         Player.Reset();
+        GameMenuUI.Reset();
     }
 
     public void EndGame(Player player, GameEndStatus status)

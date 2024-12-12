@@ -9,6 +9,7 @@ namespace Assets.Scripts.Collectibles
         public CollectibleType Type;
 
         [SerializeField] SpriteRenderer _spriteRenderer;
+        [SerializeField] BoxCollider2D _collider;
 
         public void Init(CollectibleType type)
         {
@@ -16,12 +17,19 @@ namespace Assets.Scripts.Collectibles
             _spriteRenderer.sprite = type.Sprite;
         }
 
+        public void Reset()
+        {
+            _spriteRenderer.enabled = true;
+            _collider.enabled = true;
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.TryGetComponent<Player>(out var player))
             {
                 Type.OnPickUp(player);
-                Destroy(this.gameObject);
+                _spriteRenderer.enabled = false;
+                _collider.enabled = false;
             }
         }
     }

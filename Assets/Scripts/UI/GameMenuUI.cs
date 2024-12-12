@@ -24,5 +24,12 @@ namespace Assets.Scripts.UI
         {
             _loseScreen.SetActive(true);
         }
+
+        public void Reset()
+        {
+            _menuScreen.SetActive(false);
+            _winScreen.Hide();
+            _loseScreen.SetActive(false);
+        }
     }
 }
