@@ -4,16 +4,9 @@ using Assets.Scripts.Objects;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
 using Assets.Scripts.TileModifiers;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.WSA;
 using Tile = Assets.Scripts.Terrain.Tile;
 
 public class LevelGenerator : MonoBehaviour
