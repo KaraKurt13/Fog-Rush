@@ -70,7 +70,7 @@ public class AuthController : MonoBehaviour
 
     public void LoginWithEmail(string email, string password)
     {
-        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task => 
+        _auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWithOnMainThread(task => 
         {
             if (task.IsCanceled)
             {
@@ -87,6 +87,8 @@ public class AuthController : MonoBehaviour
             AuthResult result = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 result.User.DisplayName, result.User.UserId);
+            Engine.MainMenuUI.HideLoginOptions();
+            Engine.OnSuccessfullLogin();
         });
     }
     #endregion Email/Password Authentication
