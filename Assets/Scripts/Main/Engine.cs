@@ -34,7 +34,8 @@ public class Engine : MonoBehaviour
         Find.Engine = this;
         Find.DataLibrary = new DataLibrary();
 
-        var levelData = LevelPrefab?.GetComponent<LevelPrefab>().ConvertPrefabToData() ?? LevelManager.SelectedLevel.ConvertPrefabToData();
+        var levelData = LevelPrefab != null ? 
+            LevelPrefab.GetComponent<LevelPrefab>().ConvertPrefabToData() : LevelManager.SelectedLevel.ConvertPrefabToData();
         Terrain = LevelGenerator.GenerateLevel(levelData);
         LevelGenerator.SetupPlayers();
 
@@ -69,7 +70,11 @@ public class Engine : MonoBehaviour
         player.StatsTracker.StopTracking();
 
         if (status == GameEndStatus.Win)
+        {
+            var levelNum = LevelManager.SelectedLevel.Number;
+            DatabaseManager.OnLevelComplete(levelNum, stats);
             GameMenuUI.ShowWinScreen(stats);
+        }
         else
             GameMenuUI.ShowLoseScreen();
     }

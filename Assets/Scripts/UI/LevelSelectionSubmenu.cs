@@ -19,15 +19,19 @@ namespace Assets.Scripts.UI
         public void Draw()
         {
             var levelsData = LevelManager.LevelsData;
-            var levelsPrefabs = LevelManager.LevelPrefabs.Values;
-            foreach (var level in levelsPrefabs)
+            var levelsPrefabs = LevelManager.LevelPrefabs;
+            for (int i = 1; i <= levelsData.Count; i++)
             {
+                var prefab = levelsPrefabs[i];
                 var levelObject = Instantiate(_levelPrefab, _levelsContainer).GetComponent<LevelButtonSubcomponent>();
-                levelObject.Number.text = level.Number.ToString();
-                levelObject.Button.onClick.AddListener(() => LevelManager.LoadLevel(level.Number));
-                var isUnlocked = levelsData[level.Number].IsUnlocked; 
+                var levelNumber = prefab.Number;
+                var isUnlocked = levelsData[levelNumber].IsUnlocked;
+
+                levelObject.Number.text = levelNumber.ToString();
+                levelObject.Button.onClick.AddListener(() => LevelManager.LoadLevel(levelNumber));
                 levelObject.SetLock(!isUnlocked);
             }
+
             this.gameObject.SetActive(true);
         }
 

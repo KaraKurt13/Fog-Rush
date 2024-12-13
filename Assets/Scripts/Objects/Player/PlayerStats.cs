@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerStats
 {
-    public float TimeSpent { get; }
+    public int TimeSpent { get; }
 
     public int RemainingHealth { get; }
     
     public int Coins { get; }
 
-    public PlayerStats(float timeSpent, int remainingHealth, int coinsAmount)
+    public PlayerStats(int timeSpent, int remainingHealth, int coinsAmount)
     {
         TimeSpent = timeSpent;
         RemainingHealth = remainingHealth;

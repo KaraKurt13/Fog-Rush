@@ -6,112 +6,143 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
+using Firebase.Auth;
+using Assets.Scripts.Main;
 
 public static class DatabaseManager
 {
+    private static string _userId;
+
     public static void LoadLevelData(string userId, Action<Dictionary<int,LevelData>> onLoaded = null)
     {
-        var _database = FirebaseDatabase.DefaultInstance.RootReference;
-        _database.Child("users").Child(userId).Child("levels")
-            .GetValueAsync()
-            .ContinueWithOnMainThread(task =>
+        _userId = userId;
+        var configRef = FirebaseDatabase.DefaultInstance.RootReference.Child("config").Child("totalLevels")
+            .GetValueAsync().ContinueWithOnMainThread(task =>
             {
-                if (task.IsCompleted && !task.IsFaulted && !task.IsCanceled)
+                if (task.IsCompleted && !task.IsFaulted)
                 {
-                    DataSnapshot snapshot = task.Result;
+                    int totalLevels = int.Parse(task.Result.Value.ToString());
+                    var userLevelsRef = FirebaseDatabase.DefaultInstance
+                        .RootReference.Child("users").Child(userId).Child("levels");
+                    userLevelsRef.GetValueAsync().ContinueWithOnMainThread(levelsTask =>
+                    {
+                        if (levelsTask.IsCompleted && !levelsTask.IsFaulted)
+                        {
+                            var dataSnapshot = levelsTask.Result;
+                            var levels = new Dictionary<int, LevelData>();
+                            var updates = new Dictionary<string, object>();
 
-                    if (snapshot.Exists)
-                    {
-                        var levels = new Dictionary<int, LevelData>();
-                        foreach (var child in snapshot.Children)
-                        {
-                            if (int.TryParse(child.Key, out int levelId))
+                            for (int levelNum = 1; levelNum <= totalLevels; levelNum++)
                             {
-                                var json = child.GetRawJsonValue();
-                                LevelData levelData = JsonConvert.DeserializeObject<LevelData>(json);
-                                levels.Add(levelId, levelData);
+                                if (dataSnapshot.HasChild(levelNum.ToString()))
+                                {
+                                    var json = dataSnapshot.Child(levelNum.ToString()).GetRawJsonValue();
+                                    LevelData levelData = JsonConvert.DeserializeObject<LevelData>(json);
+                                    levels.Add(levelNum, levelData);
+                                }
+                                else
+                                {
+                                    Debug.Log($"Level {levelNum} not found. Added data to update.");
+
+                                    var defaultData = new LevelData();
+                                    if (levelNum == 1 || levels[levelNum - 1].IsCompleted)
+                                        defaultData.IsUnlocked = true;
+
+                                    updates.Add(levelNum.ToString(), defaultData);
+                                    levels.Add(levelNum, defaultData);
+                                }
                             }
+
+                            if (updates.Count > 0)
+                            {
+                                Debug.Log($"New levels data has been found. Updating {updates.Count} levels...");
+                                var levelsData = updates.ToDictionary(
+                                        kvp => kvp.Key.ToString(),
+                                        kvp => kvp.Value
+                                    );
+                                var json = JsonConvert.SerializeObject(levelsData);
+                                userLevelsRef.SetRawJsonValueAsync(json).ContinueWithOnMainThread(updateTask =>
+                                {
+                                    if (updateTask.IsCompleted)
+                                    {
+                                        Debug.Log("New levels added for the user.");
+                                    }
+                                    else
+                                    {
+                                        Debug.LogError("Failed to add new levels: " + updateTask.Exception);
+                                    }
+                                });
+                            }
+                            onLoaded.Invoke(levels);
                         }
-                        onLoaded?.Invoke(levels);
-                    }
-                    else
-                    {
-                        Debug.Log("No data found for user. Initializing...");
-                        InitUserData(userId, () =>
+                        else
                         {
-                            LoadLevelData(userId, onLoaded);
-                        });
-                    }
+                            Debug.LogError($"Can't get user levels data! {task.Exception}");
+                            onLoaded.Invoke(new Dictionary<int, LevelData>());
+                        }
+                    });
                 }
                 else
                 {
-                    Debug.LogError("Failed to load levels: " + task.Exception);
-                    onLoaded?.Invoke(new Dictionary<int, LevelData>());
+                    Debug.LogError($"Can't get config ref:{task.Exception}");
+                    onLoaded.Invoke(new Dictionary<int, LevelData>());
                 }
             });
     }
 
-    public static void SaveLevelData(string userId, Dictionary<int,LevelData> levelData)
+    public static void OnLevelComplete(int levelNum, PlayerStats stats)
     {
+#if UNITY_EDITOR
+        _userId = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
+#endif
+        var currentLevelData = LevelManager.LevelsData[levelNum];
+        if (currentLevelData.MaxTime == 0 || stats.TimeSpent < currentLevelData.MaxTime)
+            currentLevelData.MaxTime = stats.TimeSpent;
+        if (stats.Coins > currentLevelData.MaxScore)
+            currentLevelData.MaxScore = stats.Coins;
+        currentLevelData.IsCompleted = true;
 
-    }
+        var nextLevelNum = levelNum + 1;
+        if (LevelManager.LevelsData.TryGetValue(nextLevelNum, out var data))
+            data.IsUnlocked = true;
 
-    public static void InitUserData(string userId, Action onInitialize = null)
-    {
-        DatabaseReference configRef = FirebaseDatabase.DefaultInstance.RootReference.Child("config");
-        configRef.GetValueAsync().ContinueWithOnMainThread(configTask =>
+        if (data != null)
         {
-            if (configTask.IsCompleted)
+            var lockUpdate = new Dictionary<string, object>
             {
-                DataSnapshot configSnapshot = configTask.Result;
-                int totalLevels = int.Parse(configSnapshot.Child("totalLevels").Value.ToString());
-                DatabaseReference userRef = FirebaseDatabase.DefaultInstance
-                   .RootReference.Child("users").Child(userId);
-
-                userRef.GetValueAsync().ContinueWithOnMainThread(userTask => 
+                { "IsUnlocked", true }
+            };
+            FirebaseDatabase.DefaultInstance.RootReference
+                .Child("users").Child(_userId).Child("levels").Child(nextLevelNum.ToString())
+                .UpdateChildrenAsync(lockUpdate)
+                .ContinueWithOnMainThread(result =>
                 {
-                    DataSnapshot userSnapshot = userTask.Result;
-                    if (!userSnapshot.Exists)
+                    if (result.IsCompleted)
                     {
-                        var levels = new Dictionary<int, LevelData>();
-                        for (int i = 1; i <= totalLevels; i++)
-                        {
-                            var levelData = new LevelData(0, 0, false);
-                            levels.Add(i, levelData);
-                        }
-
-                        levels[1].IsUnlocked = true;
-
-                        var levelsData = levels.ToDictionary(
-                            kvp => kvp.Key.ToString(),
-                            kvp => kvp.Value
-                        );
-                        var json = JsonConvert.SerializeObject(levelsData);
-
-                        userRef.Child("levels").SetRawJsonValueAsync(json).ContinueWithOnMainThread(initTask =>
-                        {
-                            Debug.Log("task compl");
-                            if (initTask.IsCompleted)
-                            {
-                                Debug.Log("User data initialized successfully.");
-                                onInitialize?.Invoke();
-                            }
-                            else
-                            {
-                                Debug.LogError("Failed to initialize user data: " + initTask.Exception);
-                            }
-                        });
+                        Debug.Log("Level data updated!");
                     }
                     else
                     {
-                        Debug.Log("User data already exists.");
+                        Debug.LogError("Can't update level data!");
                     }
                 });
-            }
-            else
+        }
+
+        var updatedCurrentData = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(currentLevelData));
+
+        FirebaseDatabase.DefaultInstance.RootReference
+            .Child("users").Child(_userId).Child("levels").Child(levelNum.ToString())
+            .UpdateChildrenAsync(updatedCurrentData)
+            .ContinueWithOnMainThread(result =>
             {
-                Debug.LogError("Failed to load configuration: " + configTask.Exception);
-            }
-        });
+                if (result.IsCompleted)
+                {
+                    Debug.Log("Level data updated!");
+                }
+                else
+                {
+                    Debug.LogError("Can't update level data!");
+                }
+            });
     }
 }

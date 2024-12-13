@@ -10,4 +10,9 @@ public static class TimeHelper
     {
         return Mathf.CeilToInt(seconds * TicksPerSecond);
     }
+
+    public static float TicksToSeconds(int ticks)
+    {
+        return ticks / (float)TicksPerSecond;
+    }
 }

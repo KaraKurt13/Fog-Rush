@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerStatsTracker : MonoBehaviour
 {
-    private float _timeSpent = 0f;
+    private int _timeSpent = 0;
 
     private bool _isTracking = false;
 
     private Player _relatedPlayer;
 
-    void Update()
+    void FixedUpdate()
     {
         if (_isTracking)
             TrackStats();
@@ -25,7 +25,7 @@ public class PlayerStatsTracker : MonoBehaviour
 
     public void Reset()
     {
-        _timeSpent = 0f;
+        _timeSpent = 0;
         _isTracking = true;
         Health = _maxHealth;
         Coins = 0;
@@ -43,7 +43,7 @@ public class PlayerStatsTracker : MonoBehaviour
 
     private void TrackStats()
     {
-        _timeSpent += Time.deltaTime;
+        _timeSpent++;
     }
 
     #region Health
