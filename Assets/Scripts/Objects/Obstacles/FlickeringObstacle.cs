@@ -45,6 +45,12 @@ namespace Assets.Scripts.Obstacles
             _spriteRenderer.color = color;
         }
 
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.TryGetComponent<Player>(out var player))
+                OnPlayerTouch(player);
+        }
+
         public override void OnSpawn()
         {
 
