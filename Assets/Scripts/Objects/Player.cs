@@ -25,8 +25,10 @@ public class Player : MonoBehaviour
         var horizontal = direction.x;
         var newTileVector = new Vector2Int(CurrentTile.X + horizontal, CurrentTile.Y + vertical);
         var tile = Engine.Terrain.GetTile(newTileVector.x, newTileVector.y);
-        if (tile != null && tile.IsWalkable())
-            _targetTile = Engine.Terrain.GetTile(newTileVector.x, newTileVector.y);
+        if (tile == null || !tile.IsWalkable())
+            return;
+
+        _targetTile = Engine.Terrain.GetTile(newTileVector.x, newTileVector.y);
         IsMoving = true;
 
         _animator.SetBool("IsMoving", true);
