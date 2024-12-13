@@ -55,5 +55,10 @@ namespace Assets.Scripts.MainMenu
         {
 
         }
+
+        public void QuitApplication()
+        {
+            Application.Quit();
+        }
     }
 }
