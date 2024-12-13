@@ -17,13 +17,7 @@ public class InputController : MonoBehaviour
         var vector = GetMovementVector();
         if (vector != Vector2Int.zero && Engine.Player.CanMove())
         {
-            var vertical = vector.y;
-            var horizontal = vector.x;
-            var currentTile = Engine.Player.CurrentTile;
-            var newTileVector = new Vector2Int(currentTile.X + horizontal, currentTile.Y + vertical);
-            var tile = Engine.Terrain.GetTile(newTileVector.x, newTileVector.y);
-            if (tile != null && tile.IsWalkable())
-                Engine.Player.Move(tile);
+            Engine.Player.Move(vector);
         }
     }
 

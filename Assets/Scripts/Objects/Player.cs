@@ -17,10 +17,21 @@ public class Player : MonoBehaviour
 
     private Tile _targetTile, _startTile;
 
-    public void Move(Tile tile)
+    [SerializeField] Animator _animator;
+
+    public void Move(Vector2Int direction)
     {
-        _targetTile = tile;
+        var vertical = direction.y;
+        var horizontal = direction.x;
+        var newTileVector = new Vector2Int(CurrentTile.X + horizontal, CurrentTile.Y + vertical);
+        var tile = Engine.Terrain.GetTile(newTileVector.x, newTileVector.y);
+        if (tile != null && tile.IsWalkable())
+            _targetTile = Engine.Terrain.GetTile(newTileVector.x, newTileVector.y);
         IsMoving = true;
+
+        _animator.SetBool("IsMoving", true);
+        _animator.SetFloat("X", horizontal);
+        _animator.SetFloat("Y", vertical);
         MoveLerp();
     }
 
@@ -39,6 +50,8 @@ public class Player : MonoBehaviour
         IsMoving = false;
         MovementEnabled = true;
         StatsTracker.Reset();
+        _animator.Rebind();
+        _animator.Update(0f);
         StopAllCoroutines();
     }
 
@@ -83,6 +96,7 @@ public class Player : MonoBehaviour
     {
         _targetTile = null;
         IsMoving = false;
+        _animator.SetBool("IsMoving", false);
     }
 
     private void OnTileChange()
