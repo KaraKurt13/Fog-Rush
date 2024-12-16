@@ -5,6 +5,7 @@ using Facebook.Unity;
 using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace Assets.Scripts.MainMenu
 {
@@ -17,6 +18,8 @@ namespace Assets.Scripts.MainMenu
         public MainMenuUI MainMenuUI;
 
         public AuthController AuthController;
+
+        private LevelManager _levelManager;
 
         private void Start()
         {
@@ -37,7 +40,7 @@ namespace Assets.Scripts.MainMenu
 
         public void OnSuccessfullLogin()
         {
-            LevelManager.LoadDataFromDatabase();
+            _levelManager.LoadDataFromDatabase();
             MainMenuUI.OnSuccessfulLogin();
         }
 
@@ -59,6 +62,12 @@ namespace Assets.Scripts.MainMenu
         public void QuitApplication()
         {
             Application.Quit();
+        }
+
+        [Inject]
+        public void Construct(LevelManager levelManager)
+        {
+            _levelManager = levelManager;
         }
     }
 }

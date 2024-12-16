@@ -1,35 +1,34 @@
 using Firebase.Auth;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace Assets.Scripts.Main
 {
-    public class LevelManager : MonoBehaviour
+    public class LevelManager : IDisposable
     {
-        public static LevelPrefab SelectedLevel;
+        public LevelPrefab SelectedLevel;
 
-        public static Dictionary<int, LevelPrefab> LevelPrefabs;
+        public Dictionary<int, LevelPrefab> LevelPrefabs;
 
-        public static Dictionary<int, LevelData> LevelsData;
+        public Dictionary<int, LevelData> LevelsData;
 
-        private static int _currentLevelNumber;
+        private int _currentLevelNumber;
 
-        private void Start()
-        {
-            DontDestroyOnLoad(gameObject);
-        }
+        private DatabaseManager _databaseManager;
 
-        public static void LoadDataFromDatabase()
+        public void LoadDataFromDatabase()
         {
             LoadLevelsData();
-            DatabaseManager.LoadLevelData(FirebaseAuth.DefaultInstance.CurrentUser.UserId, result => 
+            _databaseManager.LoadLevelData(result => 
             {
                 LevelsData = result;
             });
         }
 
-        public static void LoadLevel(int level)
+        public void LoadLevel(int level)
         {
             if (!LevelPrefabs.TryGetValue(level, out var prefab))
             {
@@ -41,13 +40,13 @@ namespace Assets.Scripts.Main
             SceneManager.LoadScene(1);
         }
 
-        public static void LoadNextLevel()
+        public void LoadNextLevel()
         {
             var levelNum = _currentLevelNumber + 1;
             LoadLevel(levelNum);
         }
 
-        private static void LoadLevelsData()
+        private void LoadLevelsData()
         {
             LevelPrefabs = new();
             var levels = Resources.LoadAll<GameObject>("LevelPrefabs/");
@@ -57,6 +56,19 @@ namespace Assets.Scripts.Main
                     continue;
                 LevelPrefabs.Add(levelPrefab.Number, levelPrefab);
             }
+        }
+
+        [Inject]
+        public void Construct(DatabaseManager databaseManager)
+        {
+            _databaseManager = databaseManager;
+        }
+
+        public void Dispose()
+        {
+            SelectedLevel = null;
+            LevelPrefabs.Clear();
+            LevelsData.Clear();
         }
     }
 }

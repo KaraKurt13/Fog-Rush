@@ -2,6 +2,7 @@ using Assets.Scripts.Main;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.UI
 {
@@ -11,15 +12,12 @@ namespace Assets.Scripts.UI
 
         [SerializeField] GameObject _levelPrefab;
 
-        public void Init()
-        {
-
-        }
+        private LevelManager _levelManager;
 
         public void Draw()
         {
-            var levelsData = LevelManager.LevelsData;
-            var levelsPrefabs = LevelManager.LevelPrefabs;
+            var levelsData = _levelManager.LevelsData;
+            var levelsPrefabs = _levelManager.LevelPrefabs;
             for (int i = 1; i <= levelsData.Count; i++)
             {
                 var prefab = levelsPrefabs[i];
@@ -28,7 +26,7 @@ namespace Assets.Scripts.UI
                 var isUnlocked = levelsData[levelNumber].IsUnlocked;
 
                 levelObject.Number.text = levelNumber.ToString();
-                levelObject.Button.onClick.AddListener(() => LevelManager.LoadLevel(levelNumber));
+                levelObject.Button.onClick.AddListener(() => _levelManager.LoadLevel(levelNumber));
                 levelObject.SetLock(!isUnlocked);
             }
 
@@ -47,6 +45,12 @@ namespace Assets.Scripts.UI
             {
                 Destroy(level.gameObject);
             }
+        }
+
+        [Inject]
+        public void Construct(LevelManager levelManager)
+        {
+            _levelManager = levelManager;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class Engine : MonoBehaviour
 {
@@ -28,6 +29,10 @@ public class Engine : MonoBehaviour
     //Temp
     public GameObject LevelPrefab;
 
+    private DatabaseManager _databaseManager;
+
+    private LevelManager _levelManager;
+
     private void Awake()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
@@ -35,7 +40,7 @@ public class Engine : MonoBehaviour
         Find.DataLibrary = new DataLibrary();
 
         var levelData = LevelPrefab != null ? 
-            LevelPrefab.GetComponent<LevelPrefab>().ConvertPrefabToData() : LevelManager.SelectedLevel.ConvertPrefabToData();
+            LevelPrefab.GetComponent<LevelPrefab>().ConvertPrefabToData() : _levelManager.SelectedLevel.ConvertPrefabToData();
         Terrain = LevelGenerator.GenerateLevel(levelData);
         LevelGenerator.SetupPlayers();
 
@@ -71,8 +76,8 @@ public class Engine : MonoBehaviour
 
         if (status == GameEndStatus.Win)
         {
-            var levelNum = LevelManager.SelectedLevel.Number;
-            DatabaseManager.OnLevelComplete(levelNum, stats);
+            var levelNum = _levelManager.SelectedLevel.Number;
+            _databaseManager.OnLevelComplete(levelNum, stats);
             GameMenuUI.ShowWinScreen(stats);
         }
         else
@@ -83,4 +88,12 @@ public class Engine : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    [Inject]
+    private void Construct(DatabaseManager databaseManager, LevelManager levelManager)
+    {
+        _databaseManager = databaseManager;
+        _levelManager = levelManager;
+    }
+    
 }

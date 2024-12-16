@@ -8,14 +8,16 @@ using UnityEngine;
 using Newtonsoft.Json;
 using Firebase.Auth;
 using Assets.Scripts.Main;
+using Zenject;
 
-public static class DatabaseManager
+public class DatabaseManager
 {
-    private static string _userId;
+    private string _userId => FirebaseAuth.DefaultInstance.CurrentUser.UserId;
 
-    public static void LoadLevelData(string userId, Action<Dictionary<int,LevelData>> onLoaded = null)
+    private LevelManager _levelManager;
+
+    public void LoadLevelData(Action<Dictionary<int,LevelData>> onLoaded = null)
     {
-        _userId = userId;
         var configRef = FirebaseDatabase.DefaultInstance.RootReference.Child("config").Child("totalLevels")
             .GetValueAsync().ContinueWithOnMainThread(task =>
             {
@@ -23,7 +25,7 @@ public static class DatabaseManager
                 {
                     int totalLevels = int.Parse(task.Result.Value.ToString());
                     var userLevelsRef = FirebaseDatabase.DefaultInstance
-                        .RootReference.Child("users").Child(userId).Child("levels");
+                        .RootReference.Child("users").Child(_userId).Child("levels");
                     userLevelsRef.GetValueAsync().ContinueWithOnMainThread(levelsTask =>
                     {
                         if (levelsTask.IsCompleted && !levelsTask.IsFaulted)
@@ -90,12 +92,9 @@ public static class DatabaseManager
             });
     }
 
-    public static void OnLevelComplete(int levelNum, PlayerStats stats)
+    public void OnLevelComplete(int levelNum, PlayerStats stats)
     {
-#if UNITY_EDITOR
-        _userId = FirebaseAuth.DefaultInstance.CurrentUser.UserId;
-#endif
-        var currentLevelData = LevelManager.LevelsData[levelNum];
+        var currentLevelData = _levelManager.LevelsData[levelNum];
         if (currentLevelData.MaxTime == 0 || stats.TimeSpent < currentLevelData.MaxTime)
             currentLevelData.MaxTime = stats.TimeSpent;
         if (stats.Coins > currentLevelData.MaxScore)
@@ -103,7 +102,7 @@ public static class DatabaseManager
         currentLevelData.IsCompleted = true;
 
         var nextLevelNum = levelNum + 1;
-        if (LevelManager.LevelsData.TryGetValue(nextLevelNum, out var data))
+        if (_levelManager.LevelsData.TryGetValue(nextLevelNum, out var data))
             data.IsUnlocked = true;
 
         if (data != null)
@@ -144,5 +143,11 @@ public static class DatabaseManager
                     Debug.LogError("Can't update level data!");
                 }
             });
+    }
+
+    [Inject]
+    public void Construct(LevelManager levelManager)
+    {
+        _levelManager = levelManager;
     }
 }
