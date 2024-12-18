@@ -16,6 +16,8 @@ namespace Assets.Scripts.Main
 
         public float FogSpeed;
 
+        public int SpawnY;
+
         public LevelTerrainData(int width, int height)
         {
             Width = width;

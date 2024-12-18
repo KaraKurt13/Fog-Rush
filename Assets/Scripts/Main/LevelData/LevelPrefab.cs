@@ -21,6 +21,8 @@ namespace Assets.Scripts.Main
 
         public int Number;
 
+        public int SpawnY;
+
         public LevelTerrainData ConvertPrefabToData()
         {
             var bounds = Ground.cellBounds;
@@ -73,6 +75,7 @@ namespace Assets.Scripts.Main
             data.ObstacleControllers = ObstaclesData;
             data.FogIsEnabled = FogIsEnabled;
             data.FogSpeed = FogSpeed;
+            data.SpawnY = SpawnY;
 
             return data;
         }

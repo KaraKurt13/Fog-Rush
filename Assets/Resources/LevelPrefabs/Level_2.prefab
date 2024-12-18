@@ -393,6 +393,7 @@ MonoBehaviour:
   FogIsEnabled: 1
   FogSpeed: 1
   Number: 2
+  SpawnY: 2
 --- !u!1 &4328977365491783742
 GameObject:
   m_ObjectHideFlags: 0

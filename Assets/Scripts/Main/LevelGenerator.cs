@@ -113,7 +113,7 @@ public class LevelGenerator : MonoBehaviour
             for (int y = -padding; y < height + padding; y++)
             {
                 positions[index] = new Vector3Int(x, y, 0);
-                tiles[index] = _fogTile; // Назначаем тайл для каждой позиции
+                tiles[index] = _fogTile;
                 index++;
             }
         }
@@ -154,8 +154,8 @@ public class LevelGenerator : MonoBehaviour
 
     public void SetupPlayers()
     {
-        var startTiles = _terrainData.GetTileLine(0).ToList();
-        var randomTile = startTiles.Random();  
-        Engine.Player.Init(randomTile);
+        var startLine = _terrainData.GetTileLine(0).ToList();
+        var startTile = startLine[_levelData.SpawnY];
+        Engine.Player.Init(startTile);
     }
 }
