@@ -11,8 +11,8 @@ namespace Assets.Scripts.Main
 
         public OrientationTypeEnum MoveDirection;
 
-        public float MoveSpeedPerSecond;
+        public float MoveSpeedPerSecond = 1;
 
-        public float SpawnInterval;
+        public float SpawnInterval = 2;
     }
 }

@@ -32,7 +32,6 @@ public class DatabaseManager
                         {
                             var dataSnapshot = levelsTask.Result;
                             var levels = new Dictionary<int, LevelData>();
-                            var updates = new Dictionary<string, object>();
 
                             for (int levelNum = 1; levelNum <= totalLevels; levelNum++)
                             {
@@ -49,31 +48,18 @@ public class DatabaseManager
                                     var defaultData = new LevelData();
                                     if (levelNum == 1 || levels[levelNum - 1].IsCompleted)
                                         defaultData.IsUnlocked = true;
-
-                                    updates.Add(levelNum.ToString(), defaultData);
                                     levels.Add(levelNum, defaultData);
-                                }
-                            }
 
-                            if (updates.Count > 0)
-                            {
-                                Debug.Log($"New levels data has been found. Updating {updates.Count} levels...");
-                                var levelsData = updates.ToDictionary(
-                                        kvp => kvp.Key.ToString(),
-                                        kvp => kvp.Value
-                                    );
-                                var json = JsonConvert.SerializeObject(levelsData);
-                                userLevelsRef.SetRawJsonValueAsync(json).ContinueWithOnMainThread(updateTask =>
-                                {
-                                    if (updateTask.IsCompleted)
+                                    var json = JsonConvert.SerializeObject(defaultData);
+                                    try
                                     {
-                                        Debug.Log("New levels added for the user.");
+                                        userLevelsRef.Child(levelNum.ToString()).SetRawJsonValueAsync(json);
                                     }
-                                    else
+                                    catch (Exception ex)
                                     {
-                                        Debug.LogError("Failed to add new levels: " + updateTask.Exception);
+                                        Debug.LogError(ex.Message);
                                     }
-                                });
+                                }
                             }
                             onLoaded.Invoke(levels);
                         }

@@ -50,7 +50,7 @@ public class FogWall : MonoBehaviour
 
     public void TemporaryDeactivate(float time)
     {
-        var ticks = TimeHelper.SecondsToTicks(time);
+        TicksTillActivation = TimeHelper.SecondsToTicks(time);
         TemporaryDeactivated = true;
     }
 
