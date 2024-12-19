@@ -4,6 +4,7 @@ using Assets.Scripts.Objects;
 using Assets.Scripts.Obstacles;
 using Assets.Scripts.Terrain;
 using Assets.Scripts.TileModifiers;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -32,17 +33,22 @@ public class LevelGenerator : MonoBehaviour
     {
         _dataLibrary = Find.DataLibrary;
         _levelData = data;
-        GenerateBasicTerrain();
+        GenerateTerrain();
         GenerateObstacles();
-        SetupTilemap();
         return _terrainData;
     }
 
-    private void GenerateBasicTerrain()
+    private void GenerateTerrain()
     {
         _mapWidth = _levelData.Width;
         _mapHeight = _levelData.Height;
         _terrainData = new TerrainData(_mapWidth, _mapHeight);
+        (List<Vector3Int> vectors, List<TileBase> tiles) groundData = new();
+        (List<Vector3Int> vectors, List<TileBase> tiles) gapData = new();
+        groundData.vectors = new();
+        groundData.tiles = new();
+        gapData.vectors = new();
+        gapData.tiles = new();
 
         for (int i = 0; i < _levelData.Width; i++)
         {
@@ -58,14 +64,15 @@ public class LevelGenerator : MonoBehaviour
                 tile.GroundType = groundType;
                 tile.Layer = tileData.TerrainLayer;
 
-                // Replace later with SetupTilemaps() with SetTiles instead
                 switch (tileData.TerrainLayer)
                 {
                     case TerrainLayerEnum.Ground:
-                        Tilemaps.Ground.SetTile(vector, tileBase);
+                        groundData.vectors.Add(vector);
+                        groundData.tiles.Add(tileBase);
                         break;
                     case TerrainLayerEnum.Gap:
-                        Tilemaps.Gap.SetTile(vector, tileBase);
+                        gapData.vectors.Add(vector);
+                        gapData.tiles.Add(tileBase);
                         break;
                 }
 
@@ -91,7 +98,12 @@ public class LevelGenerator : MonoBehaviour
             }
             Find.TerrainData = _terrainData;
         }
+
+        Tilemaps.Ground.SetTiles(groundData.vectors.ToArray(), groundData.tiles.ToArray());
+        Tilemaps.Gap.SetTiles(gapData.vectors.ToArray(), gapData.tiles.ToArray());
+
         InitBackgroundFog();
+
         foreach (var tile in _terrainData.Tiles)
         {
             tile.InitNeighbours(_terrainData);
@@ -146,10 +158,6 @@ public class LevelGenerator : MonoBehaviour
                     }
             }
         }
-    }
-
-    private void SetupTilemap()
-    {
     }
 
     public void SetupPlayers()
