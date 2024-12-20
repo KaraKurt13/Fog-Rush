@@ -16,7 +16,7 @@ public class Engine : MonoBehaviour
 
     public InputController InputController;
 
-    public GameMenuUI GameMenuUI;
+    public GameInterfaceController GameInterfaceController;
 
     public TerrainData Terrain;
 
@@ -53,6 +53,16 @@ public class Engine : MonoBehaviour
             FogWall.Activate(levelData.FogSpeed);
     }
 
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+    }
+
     public void RestartLevel()
     {
         foreach (var obstacle in ObstacleControllers)
@@ -63,7 +73,7 @@ public class Engine : MonoBehaviour
 
         FogWall.Reset();
         Player.Reset();
-        GameMenuUI.Reset();
+        GameInterfaceController.Reset();
     }
 
     public void EndGame(Player player, GameEndStatus status)
@@ -78,10 +88,10 @@ public class Engine : MonoBehaviour
         {
             var levelNum = _levelManager.SelectedLevel.Number;
             _databaseManager.OnLevelComplete(levelNum, stats);
-            GameMenuUI.ShowWinScreen(stats);
+            GameInterfaceController.ShowWinScreen(stats);
         }
         else
-            GameMenuUI.ShowLoseScreen();
+            GameInterfaceController.ShowLoseScreen();
     }
 
     public void LoadMainMenuScene()

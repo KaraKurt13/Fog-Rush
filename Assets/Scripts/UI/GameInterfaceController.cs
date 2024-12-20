@@ -4,15 +4,22 @@ using UnityEngine;
 
 namespace Assets.Scripts.UI
 {
-    public class GameMenuUI : MonoBehaviour
+    public class GameInterfaceController : MonoBehaviour
     {
         [SerializeField] GameObject _loseScreen, _menuScreen;
 
         [SerializeField] WinScreenSubcomponent _winScreen;
 
+        public GamePanelComponent GamePanel;
+
         public void ShowMenu()
         {
             _menuScreen.SetActive(true);
+        }
+        
+        public void HideMenu()
+        {
+            _menuScreen.SetActive(false);
         }
 
         public void ShowWinScreen(PlayerStats stats)
@@ -30,6 +37,7 @@ namespace Assets.Scripts.UI
             _menuScreen.SetActive(false);
             _winScreen.Hide();
             _loseScreen.SetActive(false);
+            GamePanel.Reset();
         }
     }
 }

@@ -1,3 +1,4 @@
+using Assets.Scripts.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class PlayerStatsTracker : MonoBehaviour
     private bool _isTracking = false;
 
     private Player _relatedPlayer;
+
+    [SerializeField] CollectedCoinsComponent _coinsComponent;
 
     void FixedUpdate()
     {
@@ -72,6 +75,7 @@ public class PlayerStatsTracker : MonoBehaviour
     public void IncreaseCoin()
     {
         Coins++;
+        _coinsComponent.OnCoinCollected();
     }
 
     #endregion Coins

@@ -12,9 +12,9 @@ namespace Assets.Scripts.Facebook
 
         [SerializeField] GameObject _adObject;
 
-        private void Start()
+        /*private void Start()
         {
-            AdSettings.AddTestDevice("ee824333-21fb-423e-8c26-26beb6617faf");
+            /*AdSettings.AddTestDevice("ee824333-21fb-423e-8c26-26beb6617faf");
             return;
             _adView = new AdView("2311328639234573_2311329229234514", AdSize.BANNER_HEIGHT_50); // Error here
             _adView.Register(_adObject);
@@ -37,6 +37,6 @@ namespace Assets.Scripts.Facebook
             {
                 Debug.LogError("ERROR DURING ADS SHOW");
             }
-        }
+        }*/
     }
 }
