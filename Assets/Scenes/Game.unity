@@ -5609,8 +5609,7 @@ MonoBehaviour:
   FogWall: {fileID: 253581665}
   ObstacleControllers: []
   Collectibles: []
-  LevelPrefab: {fileID: 3067721148644213441, guid: 70f01651a47c0eb4298581d743813ae2,
-    type: 3}
+  LevelPrefab: {fileID: 0}
 --- !u!1 &2055884784
 GameObject:
   m_ObjectHideFlags: 0

@@ -47,6 +47,8 @@ Library: C:\Users\user\Documents\GitHub\MobileRunner\Temp\BurstOutput\tempburstl
 --assembly-defines=Unity.VisualScripting.Core;
 --assembly-defines=Unity.VisualScripting.Flow;
 --assembly-defines=UnityEngine;
+--assembly-defines=Zenject-usage;
+--assembly-defines=Zenject;
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\user\Documents\GitHub\MobileRunner\Temp\Burst
 --key-folder=B:/Unity/2022.3.25f1/Editor/Data/PlaybackEngines/AndroidPlayer

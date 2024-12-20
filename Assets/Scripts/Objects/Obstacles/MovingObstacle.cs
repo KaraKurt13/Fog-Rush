@@ -1,4 +1,5 @@
 using Assets.Scripts.Terrain;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Assets.Scripts.Obstacles
     public class MovingObstacle : ObstacleBase
     {
         public Engine Engine;
+
+        public Action<MovingObstacle> OnDestroy;
 
         private OrientationTypeEnum _direction;
 
@@ -40,6 +43,12 @@ namespace Assets.Scripts.Obstacles
             if (_direction == OrientationTypeEnum.Down)
                 return transform.position.y <= _endingY;
             return false;
+        }
+
+        public void Destroy()
+        {
+            Destroy(gameObject);
+            OnDestroy(this);
         }
 
         public override void OnSpawn()

@@ -21,6 +21,8 @@ namespace Assets.Scripts.Obstacles
 
         [SerializeField] GameObject _obstaclePrefab;
 
+        private List<MovingObstacle> _obstacles = new();
+
         private void FixedUpdate()
         {
             if (IsActive)
@@ -43,7 +45,7 @@ namespace Assets.Scripts.Obstacles
             _endingTile = direction == OrientationTypeEnum.Up ? lastTile : firstTile;
             _spawnPosition = startTile.Center - vector * 2;
             _spawnInterval = TimeHelper.SecondsToTicks(data.SpawnInterval);
-            _ticksForSpawn = _spawnInterval;
+            _ticksForSpawn = 0;
             _obstaclePrefab = data.ObstaclePrefab;
         }
 
@@ -55,12 +57,19 @@ namespace Assets.Scripts.Obstacles
         public override void Deactivate()
         {
             IsActive = false;
-            // Delete all obstacles
+            DestroyAllObstacles();
         }
 
         public override void Reset()
         {
+            DestroyAllObstacles();
+            _ticksForSpawn = 0;
+        }
 
+        public void OnObstacleDestroy(MovingObstacle obstacle)
+        {
+            obstacle.OnDestroy -= OnObstacleDestroy;
+            _obstacles.Remove(obstacle);
         }
 
         protected override void Tick()
@@ -77,6 +86,14 @@ namespace Assets.Scripts.Obstacles
         {
             var obstacle = Instantiate(_obstaclePrefab, _spawnPosition, Quaternion.identity).GetComponent<MovingObstacle>();
             obstacle.Activate(_moveDirection, _moveSpeed, _endingTile);
+            obstacle.OnDestroy += OnObstacleDestroy;
+            _obstacles.Add(obstacle);
+        }
+
+        private void DestroyAllObstacles()
+        {
+            foreach (var obstacle in _obstacles.ToList())
+                obstacle.Destroy();
         }
     }
 }
