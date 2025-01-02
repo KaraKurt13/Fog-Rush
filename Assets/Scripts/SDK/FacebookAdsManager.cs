@@ -1,4 +1,5 @@
 using AudienceNetwork;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,16 @@ namespace Assets.Scripts.Facebook
 
         [SerializeField] GameObject _adObject;
 
+        private void Start()
+        {
+            AdSettings.AddTestDevice("ee824333-21fb-423e-8c26-26beb6617faf");
+            AdSettings.SetMixedAudience(true);
+            AdSettings.SetDataProcessingOptions(new String[] { "LDU" }, 0, 0);
+            _adView = new AdView("2311328639234573_2311329229234514", AdSize.BANNER_HEIGHT_50);
+            _adView.Register(_adObject);
+            _adView.LoadAd();
+
+        }
         /*private void Start()
         {
             /*AdSettings.AddTestDevice("ee824333-21fb-423e-8c26-26beb6617faf");
